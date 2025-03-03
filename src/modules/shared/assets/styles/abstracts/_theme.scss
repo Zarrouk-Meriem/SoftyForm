@@ -1,0 +1,22 @@
+@use "sass:map";
+@use "./themes/light" as *;
+@use "./themes/dark" as *;
+
+$themes: (
+	"light": $light,
+	"dark": $dark,
+);
+
+@mixin generate-css-variables($theme) {
+	$colors: map.get($themes, $theme);
+
+	@each $color, $value in $colors {
+		--#{$color}: #{$value};
+	}
+}
+
+@each $theme-name, $theme-values in $themes {
+	html[data-theme="#{$theme-name}"] {
+		@include generate-css-variables($theme-name);
+	}
+}

@@ -1,0 +1,115 @@
+@use "../../assets/styles/abstracts/colors" as *;
+
+.shared_navbar {
+	position: sticky;
+	display: flex;
+	flex-direction: column;
+	border-bottom: 1px solid rgb(218, 220, 224);
+	.publishTag {
+		display: flex;
+		align-items: center;
+		gap: 5px;
+	}
+
+	&_link {
+		display: flex;
+		justify-content: center;
+		gap: 1rem;
+
+		.link {
+			position: relative;
+			font-weight: 600;
+			display: flex;
+			gap: 10px;
+			padding: 3px;
+			align-items: center;
+			justify-content: center;
+			&:visited {
+				color: var(--color-purple-800);
+			}
+
+			span {
+				background-color: var(--color-purple-800);
+				padding: 0 5px;
+				font-size: 14px;
+				border-radius: 40%;
+				color: white;
+				font-weight: 400;
+			}
+			&:visited::after,
+			&:hover::after {
+				width: 100%;
+			}
+		}
+		.link::after {
+			content: "";
+			height: 3px;
+			width: 0%;
+			left: 0;
+			position: absolute;
+			bottom: -2px;
+			border-radius: 5px;
+			transition: linear 200ms;
+			background-color: var(--color-purple-800);
+		}
+	}
+	&_toggler {
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 12px;
+		padding: 15px 22px;
+		&_group {
+			display: flex;
+			font-size: 1.2rem;
+			font-weight: 400;
+			gap: 1rem;
+			align-items: center;
+			justify-content: center;
+			.form-title {
+				margin-top: 2px;
+				border: 0;
+				background: none;
+				font-size: 18px;
+
+				&:hover,
+				&:active {
+					border-bottom: 1px solid silver;
+					transition: all linear 0.8s;
+				}
+			}
+		}
+		&_logo {
+			display: flex;
+			gap: 4px;
+			align-items: center;
+			color: var(--color-purple-800);
+			font-size: 1.6rem;
+			cursor: pointer;
+		}
+		.active {
+			background-color: white;
+			color: var(--color-purple-800);
+			border: 1px solid var(--color-purple-800);
+		}
+		&_button {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 12px 22px;
+			border: none;
+			border-radius: 5px;
+			color: white;
+			font-size: 1rem;
+			cursor: pointer;
+			gap: 12px;
+			background-color: var(--color-purple-800);
+		}
+		&_icon {
+			cursor: pointer;
+			height: 1.3rem;
+			width: 1.3rem;
+		}
+	}
+}

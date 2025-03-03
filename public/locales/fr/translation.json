@@ -1,0 +1,10 @@
+{
+  "title": "Titre du site",
+  "mode": "Mode",
+  "language": {
+    "en": "Anglais",
+    "fr": "Français",
+    "ar": "Arabe"
+  },
+  "not_found": "Page non trouvée!"
+}

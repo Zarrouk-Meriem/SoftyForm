@@ -1,0 +1,47 @@
+@use '_variables' as *;
+
+@mixin xxs {
+  @media (max-width: map-get($BreakPoints, 'xxs')) {
+    @content;
+  }
+}
+
+@mixin xs {
+  @media (max-width: map-get($BreakPoints, 'xs')) {
+    @content;
+  }
+}
+
+@mixin md {
+  @media (max-width: map-get($BreakPoints, 'md')) {
+    @content;
+  }
+}
+
+@mixin lg {
+  @media (max-width: map-get($BreakPoints, 'lg')) {
+    @content;
+  }
+}
+
+@mixin xl {
+  @media (max-width: map-get($BreakPoints, 'xl')) {
+    @content;
+  }
+}
+
+@mixin breakpoint($bp: 0) {
+  @media (max-width: $bp) {
+    @content;
+  }
+}
+
+@mixin mq($width, $type: min) {
+  @if $type==max {
+    $width: $width - 1px;
+  }
+
+  @media only screen and (#{$type}-width: $width) {
+    @content;
+  }
+}

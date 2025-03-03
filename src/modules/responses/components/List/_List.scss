@@ -1,0 +1,71 @@
+.todos-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.header-cell {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 2px solid #ddd;
+  background-color: #f8f8f8;
+  font-weight: bold;
+}
+
+.table-row:hover {
+  background-color: #f1f1f1;
+}
+
+.table-cell {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  color: #555;
+}
+
+.status-pending {
+  color: #ff9800;
+}
+
+.status-completed {
+  color: #4caf50;
+}
+
+.btn_container {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn {
+  cursor: pointer;
+  padding: 0 6px;
+}
+
+.btn_update {
+  background-color: #ff9800;
+  color: white;
+  border: none;
+  padding: 3px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    background-color: #f57c00;
+  }
+}
+
+.btn_delete {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 3px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    background-color: #d32f2f;
+  }
+}

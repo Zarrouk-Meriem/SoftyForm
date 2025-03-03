@@ -1,0 +1,22 @@
+.shared_main_layout {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	overflow: scroll;
+	flex-direction: column;
+	.active {
+		border-left: 6px solid #4285f4;
+	}
+
+	&_container {
+		width: 100%;
+		background-color: #f0ebf8;
+		height: 100%;
+		padding: 12px 22px;
+		flex-direction: column;
+		display: flex;
+		gap: 15px;
+		overflow: scroll;
+		align-items: center;
+	}
+}

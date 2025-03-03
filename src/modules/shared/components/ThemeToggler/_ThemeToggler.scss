@@ -1,0 +1,24 @@
+@use '../../assets/styles/abstracts/colors' as *;
+
+.shared_theme_toggler {
+  display: flex;
+  gap: 12px;
+
+  &_btn {
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+    padding: 6px 12px;
+    background-color: $secondary;
+    color: $text-foreground;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+
+    &_img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+}

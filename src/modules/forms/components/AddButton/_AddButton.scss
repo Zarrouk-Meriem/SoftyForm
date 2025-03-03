@@ -1,0 +1,29 @@
+.create-btn {
+	position: absolute;
+	top: 0;
+	right: -3.5rem;
+	cursor: pointer;
+	background-color: white;
+	border: 1px solid silver;
+	height: 3rem;
+	width: 3rem;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow:
+		0 2px 1px -1px rgba(0, 0, 0, 0.2),
+		0 1px 1px 0 rgba(0, 0, 0, 0.14),
+		0 1px 3px 0 rgba(0, 0, 0, 0.12);
+
+	.add-btn {
+		border: #333;
+		color: silver;
+		height: 2rem;
+		width: 2rem;
+		&:hover {
+			color: rgb(103, 58, 183);
+			transition: linear 0.3s;
+		}
+	}
+}

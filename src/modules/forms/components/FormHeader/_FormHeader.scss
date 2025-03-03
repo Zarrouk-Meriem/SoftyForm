@@ -1,0 +1,29 @@
+.form_header_container {
+	gap: 1rem;
+	box-shadow:
+		0 2px 1px -1px rgba(0, 0, 0, 0.2),
+		0 1px 1px 0 rgba(0, 0, 0, 0.14),
+		0 1px 3px 0 rgba(0, 0, 0, 0.12);
+	border: 1px solid rgb(218, 220, 224);
+	border-radius: 8px;
+	display: flex;
+	flex-direction: column;
+	background-color: #fff;
+	position: relative;
+	width: 50rem;
+	height: fit-content;
+	padding: 1rem;
+	border-top: 12px solid rgb(103, 58, 183);
+
+	.form_header_container_input {
+		display: flex;
+		flex-direction: column;
+		position: relative;
+		.underline {
+			background-color: red;
+			height: 2px;
+			position: absolute;
+			z-index: 9999;
+		}
+	}
+}

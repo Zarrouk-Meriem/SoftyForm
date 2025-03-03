@@ -1,0 +1,12 @@
+@forward "./theme";
+
+$primary: var(--primary);
+$secondary: var(--secondary);
+$success: var(--success);
+$danger: var(--danger);
+$warning: var(--warning);
+$info: var(--info);
+
+$bg: var(--bg);
+$text: var(--text);
+$text-foreground: var(--text-foreground);
