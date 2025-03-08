@@ -64,7 +64,7 @@ const baseQueryWithRetry = staggeredBaseQueryWithBailOut;
 
 export const api = createApi({
 	reducerPath: "api",
-	tagTypes: ["Todos", "options", "forms", "questions"],
+	tagTypes: ["options", "forms", "questions", "data", "responses"],
 	baseQuery: baseQueryWithRetry,
 	endpoints: () => ({}),
 });

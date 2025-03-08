@@ -1,26 +1,6 @@
-import i18n from "i18next";
-import Backend from "i18next-http-backend";
-import { initReactI18next } from "react-i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
-import { api } from "./modules/shared/store/services/api";
-import { supabase } from "./modules/shared/supabase/supabase";
+import { api } from "../../shared/store/services/api";
+import { supabase } from "../../shared/supabase/supabase";
 
-i18n
-	.use(Backend)
-	.use(LanguageDetector)
-	.use(initReactI18next)
-	.init({
-		debug: false,
-
-		lng: window.localStorage.getItem("language") || "en",
-		fallbackLng: "en",
-
-		interpolation: {
-			escapeValue: false,
-		},
-	});
-
-export default i18n;
 export const questionsApi = api.injectEndpoints({
 	endpoints: (builder) => ({
 		getAllQuestions: builder.query({
@@ -28,7 +8,7 @@ export const questionsApi = api.injectEndpoints({
 				const { data, error } = await supabase
 					.from("questions")
 					.select("*")
-					.order("created_at", { ascending: false });
+					.order("id", { ascending: false });
 
 				if (error) throw error;
 
@@ -36,19 +16,7 @@ export const questionsApi = api.injectEndpoints({
 			},
 			providesTags: [{ type: "questions", id: "LIST" }],
 		}),
-		getQuestionById: builder.query({
-			queryFn: async (id) => {
-				let { data: questions, error } = await supabase
-					.from("questions")
-					.select("*")
-					.eq("id", id);
 
-				if (error) throw error;
-
-				return { questions };
-			},
-			providesTags: [{ type: "questions", id: "LIST" }],
-		}),
 		deleteQuestion: builder.mutation({
 			queryFn: async (id) => {
 				const { data, error } = await supabase

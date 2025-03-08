@@ -47,6 +47,13 @@ const routes: RouteConfig[] = [
 		component: lazy(() => import("../features/preview/preview")),
 		layout: MainLayout,
 	},
+	{
+		exact: true,
+		guard: GuestGuard,
+		path: PATH.FORM_RESPONSE,
+		component: lazy(() => import("../features/preview/preview")),
+		layout: MainLayout,
+	},
 ];
 
 export default routes;

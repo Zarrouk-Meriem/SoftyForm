@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useDeleteTodoMutation, useGetTodosQuery } from "../../data/todos";
+import { useDeleteTodoMutation, useGetTodosQuery } from "../../data/responses";
 import { ITodo } from "../../../questions/data/questionTypes";
 import { IQuery } from "../../data/todoTypes";
 

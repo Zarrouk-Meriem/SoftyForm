@@ -23,18 +23,6 @@ const Login = () => {
 		}),
 		onSubmit: (values) => {
 			navigate("/form/questions");
-			// setSubmitting(true)
-			// dispatch(login(values))
-			//   .unwrap()
-			//   .then(() => {
-			//     console.log('welcome')
-			//   })
-			//   .catch((err) => {
-			//     alert(err?.message || 'something-went-wrong')
-			//   })
-			//   .finally(() => {
-			//     setSubmitting(false)
-			//   })
 		},
 	});
 

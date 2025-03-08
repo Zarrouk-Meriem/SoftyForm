@@ -1,5 +1,22 @@
 @use "../../assets/styles/abstracts/colors" as *;
-
+.back-btn {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+}
+.ant-modal-content,
+.ant-modal-body {
+	display: flex;
+	text-align: center;
+	flex-direction: column;
+	gap: 1rem;
+	position: relative;
+	p {
+		position: absolute;
+		top: 6px;
+		right: 3.6rem;
+	}
+}
 .shared_navbar {
 	position: sticky;
 	display: flex;
@@ -9,11 +26,32 @@
 		display: flex;
 		align-items: center;
 		gap: 5px;
+		.icon {
+			height: 1.2rem;
+			width: 1.2rem;
+		}
+	}
+	.clipboard {
+		display: flex;
+		align-items: center;
+		gap: 5px;
+		justify-content: center;
+		padding: 0.5rem 1rem;
+		border-radius: 5px;
+		border: 1px solid #555;
+		width: 14rem;
+		text-align: center;
+		cursor: pointer;
+		.icon {
+			height: 1.4rem;
+			width: 1.4rem;
+		}
 	}
 
 	&_link {
 		display: flex;
 		justify-content: center;
+		align-items: center;
 		gap: 1rem;
 
 		.link {
@@ -60,6 +98,13 @@
 		align-items: center;
 		gap: 12px;
 		padding: 15px 22px;
+		.preview-btn {
+			display: flex;
+			align-items: center;
+			color: inherit;
+			width: inherit;
+			height: inherit;
+		}
 		&_group {
 			display: flex;
 			font-size: 1.2rem;
@@ -88,8 +133,8 @@
 			font-size: 1.6rem;
 			cursor: pointer;
 		}
-		.active {
-			background-color: white;
+		.active-btn {
+			background: none;
 			color: var(--color-purple-800);
 			border: 1px solid var(--color-purple-800);
 		}
@@ -97,7 +142,9 @@
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			padding: 12px 22px;
+			// padding: 12px 22px;
+			padding: 10px 13px;
+
 			border: none;
 			border-radius: 5px;
 			color: white;
@@ -110,6 +157,7 @@
 			cursor: pointer;
 			height: 1.3rem;
 			width: 1.3rem;
+			color: var(--color-purple-800);
 		}
 	}
 }

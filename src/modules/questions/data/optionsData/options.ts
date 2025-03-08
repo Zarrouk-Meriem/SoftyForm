@@ -8,7 +8,8 @@ export const optionsApi = api.injectEndpoints({
 				const { data, error } = await supabase
 					.from("options")
 					.select("*")
-					.eq("question_id", id);
+					.eq("question_id", id)
+					.order("id", { ascending: true });
 
 				if (error) throw error;
 

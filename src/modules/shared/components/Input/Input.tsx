@@ -5,7 +5,7 @@ import { useUpdateOptionMutation } from "../../../questions/data/optionsData/opt
 
 interface IInputProps extends HTMLAttributes<HTMLInputElement> {
 	name: string;
-	formik: any;
+	formik?: any;
 	label?: string;
 	icon?: string;
 	type?: "email" | "text" | "number" | "password";
@@ -26,6 +26,8 @@ interface IInputProps extends HTMLAttributes<HTMLInputElement> {
 	className?: string;
 	disabled?: boolean;
 	option?: boolean;
+	question_id?: number;
+	index?: number;
 }
 
 const Input: React.FC<IInputProps> = ({
@@ -42,6 +44,8 @@ const Input: React.FC<IInputProps> = ({
 	placeholder,
 	defaultValue,
 	option,
+	question_id,
+	index,
 	...props
 }) => {
 	const [showPassword, setShowPassword] = useState(true);
@@ -84,7 +88,13 @@ const Input: React.FC<IInputProps> = ({
 					}
 					className={[className, `input-${size}`, `input-${variant}`].join(" ")}
 					onBlur={handleBlur}
-					onChange={formik.handleChange}
+					onChange={(e) => {
+						formik.handleChange(e);
+						formik.setFieldValue(
+							`responses[${index}].question_id`,
+							question_id
+						);
+					}}
 					value={formik.values[name]}
 					onSubmit={formik.handleSubmit}
 					defaultValue={defaultValue}
