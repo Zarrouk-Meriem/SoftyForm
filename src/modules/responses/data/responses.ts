@@ -8,7 +8,7 @@ export const responsesApi = api.injectEndpoints({
 				const { data, error } = await supabase
 					.from("submissions")
 					.select("*")
-					.order("created_at", { ascending: false });
+					.order("created_at", { ascending: true });
 
 				if (error) throw error;
 

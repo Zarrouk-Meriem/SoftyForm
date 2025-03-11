@@ -1,28 +1,43 @@
 // import { setQuestionQuery } from "../../data/questionSlice";
-import { Droppable } from "react-beautiful-dnd";
-import Spinner from "../../../shared/components/Spinner/Spinner";
-import { useGetAllQuestionsQuery } from "../../data/questions";
+
+import { useAppDispatch } from "../../../shared/store";
+import { questionsApi } from "../../data/questionsApi";
 import Question from "../Question/Question";
+import { useDroppable } from "@dnd-kit/core";
 
-const Questions = () => {
-	const { data: questions, isLoading } = useGetAllQuestionsQuery({});
+const Questions = ({ questions }: any) => {
+	const { isOver, setNodeRef } = useDroppable({
+		id: "droppable",
+	});
+	const style = {
+		color: isOver ? "green" : undefined,
+	};
+	// const dispatch = useAppDispatch();
+	// function handleClick() {
+	// 	dispatch(
+	// 		questionsApi.util.updateQueryData("getAllQuestions", {}, (draft) => {
+	// 			if (draft) {
+	// 				draft = [];
+	// 				alert(JSON.stringify(draft));
+	// 			}
+	// 		})
+	// 	);
+	// }
 
-	if (isLoading) return <Spinner />;
 	return (
-		<Droppable droppableId='2'>
-			{(provided) => (
-				<div
-					{...provided.droppableProps}
-					ref={provided.innerRef}
-					className='questions'
-				>
-					{provided.placeholder}
-					{questions?.map((question: object, index: number) => (
-						<Question index={index} key={index} question={question} />
-					))}
-				</div>
-			)}
-		</Droppable>
+		<div
+			onClick={(e) => console.log(e.target)}
+			className='questions'
+			ref={setNodeRef}
+			style={style}
+		>
+			{questions?.map((question: object, index: number) => (
+				<Question index={index} key={index} question={question} />
+			))}
+
+			{/* <Question index={0} key={0} question={questions[0]} />
+			<Question index={1} key={1} question={questions[1]} /> */}
+		</div>
 	);
 };
 

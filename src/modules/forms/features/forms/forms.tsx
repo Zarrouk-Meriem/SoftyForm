@@ -9,12 +9,21 @@ import AddButton from "../../components/AddButton/AddButton";
 import { useGetFormsQuery, useUpdateFormMutation } from "../../data/forms";
 import { DragDropContext } from "react-beautiful-dnd";
 import { useGetAllQuestionsQuery } from "../../../questions/data/questions";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { DndContext } from "@dnd-kit/core";
+import Question from "../../../questions/components/Question/Question";
 
 function Form() {
 	const { data: forms, isLoading } = useGetFormsQuery(2);
 	const { data: questions, isLoading: isLoadingQuestions } =
 		useGetAllQuestionsQuery({});
+
+	const [data, setData] = useState(questions);
+
+	useEffect(() => {
+		if (questions) setData(questions);
+	}, [questions]);
+
 	const [updateForm] = useUpdateFormMutation();
 	const dataQuestion = questions;
 	let newQuestions: any = [];
@@ -54,9 +63,10 @@ function Form() {
 			updateForm({ id: values.id, updatedForm: values });
 		},
 	});
-	console.log(formik.errors);
+
 	function onDragEnd(result: any) {
 		const { destination, source, draggableId } = result;
+		console.log(source, destination);
 		if (!destination) return;
 		if (
 			destination.droppableId === source.droppableId &&
@@ -81,9 +91,16 @@ function Form() {
 			},
 		});
 	}
+	//DND
+	function handleDragEnd(event) {
+		// const { over } = event;
+		// If the item is dropped over a container, set it as the parent
+		// otherwise reset the parent to `null`
+		// setParent(over ? over.id : null);
+	}
 	if (isLoading || isLoadingQuestions) return <Spinner />;
 	return (
-		<DragDropContext onDragEnd={onDragEnd}>
+		<DndContext onDragEnd={handleDragEnd}>
 			<form
 				onBlur={formik.handleSubmit}
 				onSubmit={formik.handleSubmit}
@@ -91,10 +108,12 @@ function Form() {
 			>
 				<FormHeader formik={formik} />
 				<AddButton />
-				<Questions />
+				<Questions questions={data} />
 			</form>
-		</DragDropContext>
+		</DndContext>
 	);
 }
 
 export default Form;
+
+//questions component is the droppable and each question is the draggable

@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useEffect, useState } from "react";
 import { GoStar, GoStarFill } from "react-icons/go";
 import { SiFormspree } from "react-icons/si";
-
+import toast, { Toaster } from "react-hot-toast";
 import { Link, useLocation } from "react-router-dom";
 import {
 	useGetFormsQuery,
@@ -21,9 +21,11 @@ import { FaEye } from "react-icons/fa";
 import { useGetAllResponsesQuery } from "../../../responses/data/responses";
 const Navbar = () => {
 	const { pathname } = useLocation();
-	const pathnameLength = pathname.split("/").length;
-	const isResponse = pathname.split("/")[pathnameLength - 1] === "response";
-	const isPreview = pathname.split("/")[2] === "preview";
+
+	const isResponse =
+		pathname.includes("response") && !pathname.includes("responses");
+	const isPreview = pathname.includes("preview");
+
 	const originLink = window.location.origin;
 	// generating a unique link
 
@@ -53,6 +55,7 @@ const Navbar = () => {
 	const handleOk = () => {
 		setIsModalOpen(false);
 		setIsPublished(true);
+		toast.success("form successfully published!");
 
 		updateForm({
 			id: 2,
@@ -98,11 +101,14 @@ const Navbar = () => {
 	if (isLoading || isLoadingResponses) return <Spinner />;
 	return (
 		<div className='shared_navbar'>
+			<Toaster />
 			<div className='shared_navbar_toggler'>
 				<div className='shared_navbar_toggler_group'>
-					<h3 className='shared_navbar_toggler_logo'>
-						<SiFormspree className='logo' /> Softy Forms
-					</h3>
+					<Link to={"/form/questions"}>
+						<h3 className='shared_navbar_toggler_logo'>
+							<SiFormspree className='logo' /> Softy Forms
+						</h3>
+					</Link>
 					{!isLoading && (
 						<input
 							value={
@@ -169,6 +175,7 @@ const Navbar = () => {
 													document.getElementById("antd-input")?.value;
 												await navigator.clipboard.writeText(valueToCopy);
 												setCopied(true);
+												toast.success("link copied!");
 											}}
 											color='purple'
 											type='primary'
@@ -218,9 +225,9 @@ const Navbar = () => {
 					Questions
 				</Link>
 
-				<Link className='link' to={"/form/responses"}>
+				<Link className='link' to={"/form/responses/page=1"}>
 					Responses
-					{submissions && <span>{submissions.length}</span>}
+					{submissions && form.isPublished && <span>{submissions.length}</span>}
 				</Link>
 			</div>
 		</div>

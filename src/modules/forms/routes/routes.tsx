@@ -18,7 +18,7 @@ const routes: RouteConfig[] = [
 	{
 		exact: true,
 		// guard: AuthGuard,
-		path: PATH.FORM_QUESTIONS,
+		path: PATH.FORM,
 		component: lazy(() => import("../features/forms/forms")),
 		layout: MainLayout,
 	},
@@ -26,9 +26,7 @@ const routes: RouteConfig[] = [
 		exact: true,
 		guard: GuestGuard,
 		path: PATH.FORM_QUESTIONS,
-		component: lazy(
-			() => import("../../questions/features/questions/questions")
-		),
+		component: lazy(() => import("../features/forms/forms")),
 		layout: MainLayout,
 	},
 	{
@@ -52,6 +50,13 @@ const routes: RouteConfig[] = [
 		guard: GuestGuard,
 		path: PATH.FORM_RESPONSE,
 		component: lazy(() => import("../features/preview/preview")),
+		layout: MainLayout,
+	},
+	{
+		exact: true,
+		guard: GuestGuard,
+		path: PATH.FORM_SUBMIT,
+		component: lazy(() => import("../features/preview/previewSubmitted")),
 		layout: MainLayout,
 	},
 ];

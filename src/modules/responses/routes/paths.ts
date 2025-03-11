@@ -1,3 +1,3 @@
 export const PATH = {
-	RESPONSES: "/form/responses",
+	RESPONSES: "/form/responses/:page",
 };

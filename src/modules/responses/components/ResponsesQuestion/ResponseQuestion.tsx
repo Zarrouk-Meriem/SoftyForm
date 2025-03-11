@@ -10,8 +10,8 @@ import { FaHeart, FaStar } from "react-icons/fa";
 
 import { ConfigProvider } from "antd";
 
-import PreviewOptions from "../../../forms/features/previewOptions/PreviewOptions";
 import { useFormik } from "formik";
+import ResponsesOptions from "../ResponsesOptions/ResponsesOptions";
 
 type Props = {
 	question: any;
@@ -29,7 +29,7 @@ interface FormValues {
 
 const ResponseQuestion = ({ response, question, index }: Props) => {
 	const [starsColor, setStarsColor] = useState("#fadb14");
-	console.log(response);
+
 	const formik = useFormik<FormValues>({
 		enableReinitialize: true,
 		initialValues: { responses: [] },
@@ -77,10 +77,10 @@ const ResponseQuestion = ({ response, question, index }: Props) => {
 					</div>
 					<div className='container-body'>
 						{(question.type === "Dropdown" || question.type === "Checkbox") && (
-							<PreviewOptions
+							<ResponsesOptions
 								question={question}
 								questionId={question.id}
-								index={index}
+								response={response}
 							/>
 						)}
 						{question.type === "Rating" && (
@@ -97,6 +97,7 @@ const ResponseQuestion = ({ response, question, index }: Props) => {
 											<FaStar />
 										)
 									}
+									value={response?.rate}
 								/>
 							</div>
 						)}
@@ -105,7 +106,7 @@ const ResponseQuestion = ({ response, question, index }: Props) => {
 							<Input
 								className='short-long-input'
 								variant='secondary'
-								defaultValue='hello'
+								value={response?.textAnswer}
 								size='sm'
 								name={"textAnswer"}
 								type='text'
@@ -114,7 +115,6 @@ const ResponseQuestion = ({ response, question, index }: Props) => {
 								formik={formik}
 								disabled
 							/>
-							// <input type='text' />
 						)}
 						{question.type === "File Upload" && <div className='upload'></div>}
 					</div>

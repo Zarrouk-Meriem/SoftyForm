@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
     "@iconify/api": "^3.1.1",
     "@reduxjs/toolkit": "^2.6.0",
     "@supabase/supabase-js": "^2.49.1",
@@ -52,6 +53,7 @@
     "@types/react-dom": "^18.3.5",
     "@types/react-toggle": "^4.0.5",
     "@vitejs/plugin-react": "^4.3.4",
+    "date-fns": "^4.1.0",
     "eslint": "^9.17.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",

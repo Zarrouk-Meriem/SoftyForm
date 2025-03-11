@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import * as Yup from "yup";
 import { useAppDispatch, useAppSelector } from "../../../shared/store";
 import { useNavigate } from "react-router-dom";
-import { createTodo, updateTodo } from "../../data/questionThunk";
 
 type Props = {
 	isEdit: boolean;

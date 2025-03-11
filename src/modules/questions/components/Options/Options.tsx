@@ -1,7 +1,6 @@
 import Option from "../Option/Option";
 import { useGetOptionsQuery } from "../../data/optionsData/options";
 import Spinner from "../../../shared/components/Spinner/Spinner";
-import { useEffect } from "react";
 
 type Props = {
 	formik: any;
@@ -9,9 +8,6 @@ type Props = {
 };
 function Options({ formik, questionId }: Props) {
 	const { data, isLoading } = useGetOptionsQuery(questionId);
-	useEffect(() => {
-		formik.setFieldValue("options", data);
-	}, []);
 
 	if (isLoading) return <Spinner />;
 

@@ -4,4 +4,5 @@ export const PATH = {
 	FORM_RESPONSES: "/form/responses",
 	FORM_PREVIEW: "/form/preview",
 	FORM_RESPONSE: "/form/:key/response",
+	FORM_SUBMIT: "/form/:key/response/submit",
 };

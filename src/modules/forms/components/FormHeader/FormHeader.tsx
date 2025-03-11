@@ -18,8 +18,6 @@ function FormHeader({ formik, form }: Props) {
 					<h1
 						style={{
 							fontWeight: "500",
-							// lineHeight: "30px",
-							// borderBottom: "1px solid silver",
 							display: "inline",
 						}}
 					>
