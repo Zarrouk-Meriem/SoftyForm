@@ -1,5 +1,5 @@
-import { Button, ConfigProvider } from "antd";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Button, ConfigProvider, Rate } from "antd";
+import { useLocation } from "react-router-dom";
 type Props = {
 	formik: any;
 	setSubmitted: any;
@@ -9,7 +9,7 @@ function FormFooter({ formik, setSubmitted }: Props) {
 	const { pathname } = useLocation();
 	const response = pathname.split("/");
 	const isResponse = response[response.length - 1] === "response";
-	const navigate = useNavigate();
+
 	return (
 		<div className='form-footer'>
 			<ConfigProvider componentSize={"large"}>
@@ -17,7 +17,6 @@ function FormFooter({ formik, setSubmitted }: Props) {
 					onClick={(e: any) => {
 						formik.handleSubmit(e);
 						setSubmitted(true);
-						navigate("");
 					}}
 					disabled={!isResponse || formik.isSubmitting}
 					color='purple'
@@ -26,9 +25,9 @@ function FormFooter({ formik, setSubmitted }: Props) {
 					Submit
 				</Button>
 				<Button
-					onClick={(e) => {
-						formik.resetForm(e);
-						console.log("form clicked");
+					onClick={() => {
+						formik.resetForm({ responses: [] });
+						console.log(formik.values);
 					}}
 					color='purple'
 					variant='filled'

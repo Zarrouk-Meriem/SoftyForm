@@ -1,11 +1,6 @@
-// import { setQuestionQuery } from "../../data/questionSlice";
-import Spinner from "../../../shared/components/Spinner/Spinner";
-import { useGetAllQuestionsQuery } from "../../../questions/data/questions";
 import PreviewQuestion from "../previewQuestion/PreviewQuestion";
 
-const PreviewQuestions = ({ formik }: any) => {
-	const { data: questions, isLoading } = useGetAllQuestionsQuery({});
-	if (isLoading) return <Spinner />;
+const PreviewQuestions = ({ formik, questions }: any) => {
 	return (
 		<div className='questions'>
 			{questions?.map((question: any, i: number) => (

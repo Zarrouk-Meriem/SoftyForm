@@ -1,42 +1,26 @@
 // import { setQuestionQuery } from "../../data/questionSlice";
 
-import { useAppDispatch } from "../../../shared/store";
-import { questionsApi } from "../../data/questionsApi";
+import {
+	SortableContext,
+	verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import Question from "../Question/Question";
-import { useDroppable } from "@dnd-kit/core";
 
 const Questions = ({ questions }: any) => {
-	const { isOver, setNodeRef } = useDroppable({
-		id: "droppable",
-	});
-	const style = {
-		color: isOver ? "green" : undefined,
-	};
-	// const dispatch = useAppDispatch();
-	// function handleClick() {
-	// 	dispatch(
-	// 		questionsApi.util.updateQueryData("getAllQuestions", {}, (draft) => {
-	// 			if (draft) {
-	// 				draft = [];
-	// 				alert(JSON.stringify(draft));
-	// 			}
-	// 		})
-	// 	);
-	// }
+	if (!questions) return null;
 
+	console.log("****");
 	return (
-		<div
-			onClick={(e) => console.log(e.target)}
-			className='questions'
-			ref={setNodeRef}
-			style={style}
-		>
-			{questions?.map((question: object, index: number) => (
-				<Question index={index} key={index} question={question} />
-			))}
-
-			{/* <Question index={0} key={0} question={questions[0]} />
-			<Question index={1} key={1} question={questions[1]} /> */}
+		<div className='questions'>
+			<SortableContext
+				items={questions.map((q: any) => q.id)}
+				strategy={verticalListSortingStrategy}
+			>
+				{questions?.map((question: object, index: number) => {
+					console.log(question);
+					return <Question index={index} key={index} question={question} />;
+				})}
+			</SortableContext>
 		</div>
 	);
 };

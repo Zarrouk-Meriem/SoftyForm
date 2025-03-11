@@ -1,5 +1,11 @@
+import "quill/dist/quill.core.css";
 import { useLocation } from "react-router-dom";
 import Input from "../../../shared/components/Input";
+import { useCreateBlockNote } from "@blocknote/react";
+import { BlockNoteView } from "@blocknote/mantine";
+import "@blocknote/core/fonts/inter.css";
+import "@blocknote/mantine/style.css";
+
 type Props = {
 	formik?: any;
 	form?: any;
@@ -10,6 +16,7 @@ function FormHeader({ formik, form }: Props) {
 
 	const pathnameLength = pathname.split("/").length;
 	const isResponse = pathname.split("/")[pathnameLength - 1] === "response";
+	const editor = useCreateBlockNote();
 
 	if (isPreview || isResponse)
 		return (
@@ -43,6 +50,14 @@ function FormHeader({ formik, form }: Props) {
 					type='text'
 					required={false}
 				/>
+				<BlockNoteView
+					editor={editor}
+					sideMenu={true}
+					theme={"light"}
+					draggable={false}
+					formattingToolbar={true}
+					onChange={(value) => console.log(value)}
+				/>
 			</div>
 			<div className='form_header_container_input'>
 				<Input
@@ -55,7 +70,6 @@ function FormHeader({ formik, form }: Props) {
 					required={false}
 					placeholder='Form description'
 				/>
-				<div className='underline'></div>
 			</div>
 		</div>
 	);

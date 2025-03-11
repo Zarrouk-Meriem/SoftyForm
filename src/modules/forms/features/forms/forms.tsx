@@ -7,11 +7,22 @@ import * as Yup from "yup";
 import Questions from "../../../questions/components/Questions/Questions";
 import AddButton from "../../components/AddButton/AddButton";
 import { useGetFormsQuery, useUpdateFormMutation } from "../../data/forms";
-import { DragDropContext } from "react-beautiful-dnd";
-import { useGetAllQuestionsQuery } from "../../../questions/data/questions";
+import {
+	useGetAllQuestionsQuery,
+	useUpdateQuestionMutation,
+} from "../../../questions/data/questions";
 import { useEffect, useState } from "react";
-import { DndContext } from "@dnd-kit/core";
-import Question from "../../../questions/components/Question/Question";
+
+import {
+	DndContext,
+	closestCenter,
+	KeyboardSensor,
+	PointerSensor,
+	useSensor,
+	useSensors,
+	type DragEndEvent,
+} from "@dnd-kit/core";
+import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 
 function Form() {
 	const { data: forms, isLoading } = useGetFormsQuery(2);
@@ -30,17 +41,7 @@ function Form() {
 	dataQuestion?.map(
 		(question) => (newQuestions[`${question.id}`] = { ...question })
 	);
-	const [state, setState] = useState({
-		questions: newQuestions,
-		columns: {
-			"0": {
-				id: 0,
-				title: "questions",
-				questionIds: questions?.map((question) => `${question.id}`),
-			},
-		},
-		columnOrder: ["0"],
-	});
+
 	const validationSchema = Yup.object().shape({
 		id: Yup.number().integer().min(0, "Invalid ID").required("ID is required"),
 		title: Yup.string()
@@ -63,44 +64,50 @@ function Form() {
 			updateForm({ id: values.id, updatedForm: values });
 		},
 	});
+	const [updateQuestion] = useUpdateQuestionMutation();
+	console.log("old data", data);
+	function handleDragEnd(event: DragEndEvent) {
+		const { active, over } = event;
+		if (over && active.id !== over.id) {
+			setData((prevItems: any) => {
+				const oldIndex = prevItems.findIndex(
+					(item: any) => item.id === active.id
+				);
+				const newIndex = prevItems.findIndex(
+					(item: any) => item.id === over.id
+				);
+				console.log(arrayMove(prevItems, oldIndex, newIndex));
+				return arrayMove(prevItems, oldIndex, newIndex);
+			});
+			console.log("data", data);
+			data?.map((question, index) => {
+				updateQuestion({
+					id: question.id,
+					updatedQuestion: { order_number: index + 1 },
+				});
+			});
+		}
+	}
 
-	function onDragEnd(result: any) {
-		const { destination, source, draggableId } = result;
-		console.log(source, destination);
-		if (!destination) return;
-		if (
-			destination.droppableId === source.droppableId &&
-			destination.index === source.index
-		)
-			return;
-		const column = state.columns["0"];
-
-		const newQuestionIds = Array.from(column.questionIds);
-
-		newQuestionIds.splice(source.index, 1);
-		newQuestionIds.splice(destination.index, 0, draggableId);
-		const newColumn = {
-			...column,
-			questionIds: newQuestionIds,
-		};
-		setState({
-			...state,
-			columns: {
-				...state.columns,
-				[newColumn.id]: newColumn,
+	const sensors = useSensors(
+		useSensor(PointerSensor, {
+			activationConstraint: {
+				distance: 8,
 			},
-		});
-	}
-	//DND
-	function handleDragEnd(event) {
-		// const { over } = event;
-		// If the item is dropped over a container, set it as the parent
-		// otherwise reset the parent to `null`
-		// setParent(over ? over.id : null);
-	}
+		}),
+		useSensor(KeyboardSensor, {
+			coordinateGetter: sortableKeyboardCoordinates,
+		})
+	);
+
 	if (isLoading || isLoadingQuestions) return <Spinner />;
+
 	return (
-		<DndContext onDragEnd={handleDragEnd}>
+		<DndContext
+			sensors={sensors}
+			collisionDetection={closestCenter}
+			onDragEnd={handleDragEnd}
+		>
 			<form
 				onBlur={formik.handleSubmit}
 				onSubmit={formik.handleSubmit}
@@ -108,6 +115,7 @@ function Form() {
 			>
 				<FormHeader formik={formik} />
 				<AddButton />
+
 				<Questions questions={data} />
 			</form>
 		</DndContext>

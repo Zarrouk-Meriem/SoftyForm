@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 import * as Yup from "yup";
-import Container from "../Container/Container";
 import Input from "../../../shared/components/Input";
 import Options from "../Options/Options";
 import { useFormik } from "formik";
@@ -32,7 +31,8 @@ import {
 	useUpdateQuestionMutation,
 } from "../../data/questions";
 
-import { useDraggable } from "@dnd-kit/core";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 type Props = {
 	question: any;
@@ -40,6 +40,11 @@ type Props = {
 };
 
 const Question = ({ question }: Props) => {
+	const { attributes, listeners, setNodeRef, transform, isDragging } =
+		useSortable({
+			id: question.id,
+		});
+
 	const [deleteQuestion] = useDeleteQuestionMutation();
 	const [updateQuestion] = useUpdateQuestionMutation();
 	const [duplicateQuestion] = useDuplicateQuestionMutation();
@@ -155,14 +160,10 @@ const Question = ({ question }: Props) => {
 	function handleAddOption() {
 		createOption(formik.values.id);
 	}
-	const { attributes, listeners, setNodeRef, transform } = useDraggable({
-		id: "draggable",
-	});
-	const style = transform
-		? {
-				transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-			}
-		: undefined;
+
+	const style = {
+		transform: CSS.Transform.toString(transform),
+	};
 
 	return (
 		<ConfigProvider
@@ -175,235 +176,244 @@ const Question = ({ question }: Props) => {
 				},
 			}}
 		>
-			<div
-				id={question.id}
-				className='container'
-				ref={setNodeRef}
-				style={style}
-				{...listeners}
-				{...attributes}
-				onSubmit={(e: any) => formik.handleSubmit(e)}
-			>
-				<div className='container-header'>
-					<Input
-						className='question-input'
-						variant='secondary'
-						placeholder='Question'
-						size='sm'
-						name='question'
-						label=''
-						type='text'
-						required={false}
-						formik={formik}
-					/>
-					<Select
-						className='container-header_select'
-						id='type'
-						value={formik.values.type || "Dropdown"}
-						onChange={(e, value) => {
-							formik.setFieldValue("type", value);
-							console.log(e.target);
-						}}
-						style={{ width: 400 }}
-						options={typeOptions}
-					/>
-				</div>
-				<div className='container-body'>
-					{(formik.values.type === "Dropdown" ||
-						formik.values.type === "Checkbox") && (
-						<>
-							<Options formik={formik} questionId={formik.values.id} />
-
-							<div className='options-adder'>
-								{formik.values.type === "Checkbox" && (
-									<MdOutlineSquare className='option-icon' />
-								)}
-
-								{formik.values.type === "Dropdown" && (
-									<p className='option-icon'>
-										{`${(options?.length ?? 1) + 1}` || 1}.
-									</p>
-								)}
-								<input
-									onClick={handleAddOption}
-									defaultValue={"Add option"}
-									style={{ background: "0", color: "grey" }}
-									maxLength={10}
-								/>
-							</div>
-						</>
-					)}
-					{formik.values.type === "Rating" && (
-						<div className='rating'>
-							<div className='selects'>
-								<Select
-									value={formik.values.starsNum || 5}
-									onChange={(value) => formik.setFieldValue("starsNum", value)}
-									id='starsNum'
-									style={{ width: 55 }}
-									options={starsNumOptions}
-								/>
-								<Select
-									value={formik.values.starsKind}
-									onChange={(value) => formik.setFieldValue("starsKind", value)}
-									id='starsKind'
-									defaultValue={"stars"}
-									style={{ width: 60 }}
-									options={starsOptions}
-								/>
-							</div>
-
-							<Rate
-								disabled
-								count={formik.values.starsNum * 1 || 5}
-								character={
-									formik.values.starsKind === "likes" ? (
-										<BiSolidLike />
-									) : formik.values.starsKind === "hearts" ? (
-										<FaHeart />
-									) : (
-										<FaStar />
-									)
-								}
-							/>
-						</div>
-					)}
-					{(formik.values.type === "Short Text" ||
-						formik.values.type === "Paragraph") && (
+			<div className='activer'>
+				<div
+					id={question.id}
+					className=' question container'
+					ref={setNodeRef}
+					style={style}
+					data-dragging={isDragging}
+					{...listeners}
+					{...attributes}
+					onSubmit={(e: any) => formik.handleSubmit(e)}
+					onBlur={(e: any) => formik.handleSubmit(e)}
+				>
+					<div className='container-header'>
 						<Input
-							className='short-long-input'
+							className='question-input'
 							variant='secondary'
-							placeholder={
-								formik.values.type === "Short Text"
-									? "Short answer text"
-									: "Long answer text"
-							}
+							placeholder='Question'
 							size='sm'
-							name={
-								formik.values.type === "Short Text" ? "text-short" : "text-long"
-							}
+							name='question'
+							label=''
 							type='text'
 							required={false}
 							formik={formik}
-							disabled={true}
 						/>
-					)}
-					{formik.values.type === "File Upload" && (
-						<div className='upload'>
-							<div className='constraints'>
-								<div className='constraint'>
-									<p>Allow only specific file types</p>
-									<Switch
-										checked={formik.values.isSpecificTypes}
-										onChange={(value) => {
-											formik.setFieldValue("isSpecificTypes", value);
-											setIsSpecific(value);
-										}}
-										className='switcher'
+						<Select
+							className='container-header_select'
+							id='type'
+							value={formik.values.type || "Paragraph"}
+							onChange={(value) => {
+								formik.setFieldValue("type", value || value.value);
+							}}
+							style={{ width: 400 }}
+							options={typeOptions}
+						/>
+					</div>
+					<div className='container-body'>
+						{(formik.values.type === "Dropdown" ||
+							formik.values.type === "Checkbox") && (
+							<>
+								<Options formik={formik} questionId={formik.values.id} />
+
+								<div className='options-adder'>
+									{formik.values.type === "Checkbox" && (
+										<MdOutlineSquare className='option-icon' />
+									)}
+
+									{formik.values.type === "Dropdown" && (
+										<p className='option-icon'>
+											{`${(options?.length ?? 1) + 1}` || 1}.
+										</p>
+									)}
+									<input
+										onClick={handleAddOption}
+										defaultValue={"Add option"}
+										style={{ background: "0", color: "grey" }}
+										maxLength={10}
 									/>
 								</div>
-								{isSpecific && (
-									<Checkbox.Group
-										className='checkboxGroup'
-										style={{ width: "100%" }}
-										onChange={(change) =>
-											formik.setFieldValue("specificTypes", change)
-										}
-										value={formik.values.specificTypes}
-									>
-										<Row>
-											<Col span={8}>
-												<Checkbox value='Document'>Document</Checkbox>
-											</Col>
-											<Col span={8}>
-												<Checkbox value='Spreadsheet'>Spreadsheet</Checkbox>
-											</Col>
-											<Col span={8}>
-												<Checkbox value='PDF'>PDF</Checkbox>
-											</Col>
-											<Col span={8}>
-												<Checkbox value='Video'>Video</Checkbox>
-											</Col>
-											<Col span={8}>
-												<Checkbox value='Presentation'>Presentation</Checkbox>
-											</Col>
-											<Col span={8}>
-												<Checkbox value='Drawing'>Drawing</Checkbox>
-											</Col>
-											<Col span={8}>
-												<Checkbox value='Image'>Image</Checkbox>
-											</Col>
-											<Col span={8}>
-												<Checkbox value='Audio'>Audio</Checkbox>
-											</Col>
-										</Row>
-									</Checkbox.Group>
-								)}
-								<div className='constraint'>
-									<p>Maximum number of files</p>
+							</>
+						)}
+						{formik.values.type === "Rating" && (
+							<div className='rating'>
+								<div className='selects'>
 									<Select
-										value={formik.values.maxFileNum}
-										className='select-maxNumFile'
-										options={[
-											{ value: 1, label: "1" },
-											{ value: 5, label: "5" },
-											{ value: 10, label: "10" },
-										]}
+										value={formik.values.starsNum || 5}
 										onChange={(value) =>
-											formik.setFieldValue("maxFileNum", value)
+											formik.setFieldValue("starsNum", value)
 										}
+										id='starsNum'
+										style={{ width: 55 }}
+										options={starsNumOptions}
+									/>
+									<Select
+										value={formik.values.starsKind}
+										onChange={(value) =>
+											formik.setFieldValue("starsKind", value)
+										}
+										id='starsKind'
+										defaultValue={"stars"}
+										style={{ width: 60 }}
+										options={starsOptions}
 									/>
 								</div>
-								<div className='constraint'>
-									<p>Maximum file size</p>
-									<Select
-										value={formik.values.maxFileSize}
-										className='select-maxNumFile'
-										options={[
-											{ value: 1, label: "1 MB" },
-											{ value: 10, label: "10 MB" },
-											{ value: 100, label: "100 MB" },
-											{ value: 1000, label: "1 GB" },
-											{ value: 10000, label: "10 GB" },
-										]}
-										onChange={(value) =>
-											formik.setFieldValue("maxFileSize", value)
-										}
-									/>
+
+								<Rate
+									disabled
+									count={formik.values.starsNum * 1 || 5}
+									character={
+										formik.values.starsKind === "likes" ? (
+											<BiSolidLike />
+										) : formik.values.starsKind === "hearts" ? (
+											<FaHeart />
+										) : (
+											<FaStar />
+										)
+									}
+								/>
+							</div>
+						)}
+						{(formik.values.type === "Short Text" ||
+							formik.values.type === "Paragraph") && (
+							<Input
+								className='short-long-input'
+								variant='secondary'
+								placeholder={
+									formik.values.type === "Short Text"
+										? "Short answer text"
+										: "Long answer text"
+								}
+								size='sm'
+								name={
+									formik.values.type === "Short Text"
+										? "text-short"
+										: "text-long"
+								}
+								type='text'
+								required={false}
+								formik={formik}
+								disabled={true}
+							/>
+						)}
+						{formik.values.type === "File Upload" && (
+							<div className='upload'>
+								<div className='constraints'>
+									<div className='constraint'>
+										<p>Allow only specific file types</p>
+										<Switch
+											checked={formik.values.isSpecificTypes}
+											onChange={(value) => {
+												formik.setFieldValue("isSpecificTypes", value);
+												setIsSpecific(value);
+											}}
+											className='switcher'
+										/>
+									</div>
+									{isSpecific && (
+										<Checkbox.Group
+											className='checkboxGroup'
+											style={{ width: "100%" }}
+											onChange={(change) =>
+												formik.setFieldValue("specificTypes", change)
+											}
+											value={formik.values.specificTypes}
+										>
+											<Row>
+												<Col span={8}>
+													<Checkbox value='Document'>Document</Checkbox>
+												</Col>
+												<Col span={8}>
+													<Checkbox value='Spreadsheet'>Spreadsheet</Checkbox>
+												</Col>
+												<Col span={8}>
+													<Checkbox value='PDF'>PDF</Checkbox>
+												</Col>
+												<Col span={8}>
+													<Checkbox value='Video'>Video</Checkbox>
+												</Col>
+												<Col span={8}>
+													<Checkbox value='Presentation'>Presentation</Checkbox>
+												</Col>
+												<Col span={8}>
+													<Checkbox value='Drawing'>Drawing</Checkbox>
+												</Col>
+												<Col span={8}>
+													<Checkbox value='Image'>Image</Checkbox>
+												</Col>
+												<Col span={8}>
+													<Checkbox value='Audio'>Audio</Checkbox>
+												</Col>
+											</Row>
+										</Checkbox.Group>
+									)}
+									<div className='constraint'>
+										<p>Maximum number of files</p>
+										<Select
+											value={formik.values.maxFileNum}
+											className='select-maxNumFile'
+											options={[
+												{ value: 1, label: "1" },
+												{ value: 5, label: "5" },
+												{ value: 10, label: "10" },
+											]}
+											onChange={(value) =>
+												formik.setFieldValue("maxFileNum", value)
+											}
+										/>
+									</div>
+									<div className='constraint'>
+										<p>Maximum file size</p>
+										<Select
+											value={formik.values.maxFileSize}
+											className='select-maxNumFile'
+											options={[
+												{ value: 1, label: "1 MB" },
+												{ value: 10, label: "10 MB" },
+												{ value: 100, label: "100 MB" },
+												{ value: 1000, label: "1 GB" },
+												{ value: 10000, label: "10 GB" },
+											]}
+											onChange={(value) =>
+												formik.setFieldValue("maxFileSize", value)
+											}
+										/>
+									</div>
 								</div>
 							</div>
-						</div>
-					)}
-				</div>
-				<div className='container-footer'>
-					<div className='footer'>
-						<button
-							className='duplicate-btn '
-							onClick={(e) => {
-								e.preventDefault();
-								duplicateQuestion(formik.values);
-							}}
-						>
-							<HiOutlineDuplicate className='duplicate btn' />
-						</button>
-						<button
-							className='delete-btn '
-							onClick={(e) => {
-								e.preventDefault();
-								deleteQuestion(formik.values.id);
-							}}
-						>
-							<FiTrash2 className='delete btn' />
-						</button>
-						<div className='required'>
-							<p>Required</p>
-							<Switch
-								checked={formik.values.isRequired}
-								onChange={(checked) =>
-									formik.setFieldValue("isRequired", checked)
-								}
-								className='switcher'
-							/>
+						)}
+					</div>
+					<div className='container-footer'>
+						<div className='footer'>
+							<button
+								className='duplicate-btn '
+								onClick={(e) => {
+									e.preventDefault();
+									duplicateQuestion(formik.values);
+								}}
+							>
+								<HiOutlineDuplicate className='duplicate btn' />
+							</button>
+							<button
+								className='delete-btn '
+								onClick={(e) => {
+									e.preventDefault();
+									deleteQuestion(formik.values.id);
+								}}
+							>
+								<FiTrash2 className='delete btn' />
+							</button>
+							<div className='required'>
+								<p>Required</p>
+								<Switch
+									checked={formik.values.isRequired}
+									onChange={(checked) =>
+										formik.setFieldValue("isRequired", checked)
+									}
+									className='switcher'
+								/>
+							</div>
 						</div>
 					</div>
 				</div>
