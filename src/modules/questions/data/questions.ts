@@ -8,7 +8,7 @@ export const questionsApi = api.injectEndpoints({
 				const { data, error } = await supabase
 					.from("questions")
 					.select("*")
-					.order("order_number", { ascending: false });
+					.order("order_number", { ascending: true });
 
 				if (error) throw error;
 
@@ -97,7 +97,6 @@ export const questionsApi = api.injectEndpoints({
 
 				return { data };
 			},
-			invalidatesTags: [{ type: "questions", id: "LIST" }],
 		}),
 	}),
 });

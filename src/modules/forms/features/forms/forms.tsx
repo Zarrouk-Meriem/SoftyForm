@@ -65,7 +65,7 @@ function Form() {
 		},
 	});
 	const [updateQuestion] = useUpdateQuestionMutation();
-	console.log("old data", data);
+
 	function handleDragEnd(event: DragEndEvent) {
 		const { active, over } = event;
 		if (over && active.id !== over.id) {
@@ -76,18 +76,20 @@ function Form() {
 				const newIndex = prevItems.findIndex(
 					(item: any) => item.id === over.id
 				);
-				console.log(arrayMove(prevItems, oldIndex, newIndex));
+
 				return arrayMove(prevItems, oldIndex, newIndex);
-			});
-			console.log("data", data);
-			data?.map((question, index) => {
-				updateQuestion({
-					id: question.id,
-					updatedQuestion: { order_number: index + 1 },
-				});
 			});
 		}
 	}
+
+	useEffect(() => {
+		data?.map((question, i) => {
+			updateQuestion({
+				id: question.id,
+				updatedQuestion: { order_number: i + 1 },
+			});
+		});
+	}, [data]);
 
 	const sensors = useSensors(
 		useSensor(PointerSensor, {

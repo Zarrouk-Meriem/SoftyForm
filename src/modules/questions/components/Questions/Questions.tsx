@@ -9,7 +9,6 @@ import Question from "../Question/Question";
 const Questions = ({ questions }: any) => {
 	if (!questions) return null;
 
-	console.log("****");
 	return (
 		<div className='questions'>
 			<SortableContext
@@ -17,7 +16,6 @@ const Questions = ({ questions }: any) => {
 				strategy={verticalListSortingStrategy}
 			>
 				{questions?.map((question: object, index: number) => {
-					console.log(question);
 					return <Question index={index} key={index} question={question} />;
 				})}
 			</SortableContext>
