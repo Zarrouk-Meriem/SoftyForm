@@ -16,7 +16,10 @@ import { message } from "antd";
 
 import PreviewOptions from "../previewOptions/PreviewOptions";
 import Spinner from "../../../shared/components/Spinner/Spinner";
-import { useUploadFileMutation } from "../../data/upload";
+import {
+	useDeleteFileMutation,
+	useUploadFileMutation,
+} from "../../data/upload";
 import { BsInbox } from "react-icons/bs";
 
 type Props = {
@@ -38,7 +41,7 @@ const PreviewQuestion = ({ question, formik, index }: Props) => {
 	const [uploadFile] = useUploadFileMutation();
 	const [starsColor, setStarsColor] = useState("#fadb14");
 	const [loading, setLoading] = useState(false);
-	const [fileNames, setFileNames] = useState([]);
+	const [fileList, setFileList] = useState([]);
 
 	useEffect(() => {
 		const newColor =
@@ -68,8 +71,12 @@ const PreviewQuestion = ({ question, formik, index }: Props) => {
 		});
 		return typesToAllow.join(", ");
 	};
+	const [deleteFile] = useDeleteFileMutation();
 	function handleRemove(file: any) {
+		setFileList(fileList.filter((el) => el.name !== file.name));
+		deleteFile(file);
 		console.log(file);
+		return true;
 	}
 
 	const types = {
@@ -160,13 +167,8 @@ const PreviewQuestion = ({ question, formik, index }: Props) => {
 			try {
 				const { data } = await uploadFile(file);
 
-				setFileNames([
-					...fileNames,
-					`https://jqjhjdczamcwscpfhcxi.supabase.co/storage/v1/object/public/${data.fullPath}`,
-				]);
 				if (data) {
-					formik.setFieldValue(`responses[${index}].question_id`, question.id);
-					formik.setFieldValue(`responses[${index}].file`, fileNames);
+					setFileList([...fileList, file]);
 				}
 			} catch (error) {
 				message.error(`Upload failed`);
@@ -176,7 +178,11 @@ const PreviewQuestion = ({ question, formik, index }: Props) => {
 
 		setLoading(false);
 	};
-
+	useEffect(() => {
+		formik.setFieldValue(`responses[${index}].question_id`, question.id);
+		formik.setFieldValue(`responses[${index}].file`, fileList);
+		console.log(fileList);
+	}, [fileList]);
 	return (
 		<ConfigProvider
 			theme={{

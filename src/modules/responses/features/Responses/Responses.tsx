@@ -43,7 +43,7 @@ const ResponseCreateEdit = () => {
 				</div>
 			</Container>
 
-			<div className='container-body'>
+			<div className='container-body no-margin-top'>
 				{submissions?.length === 0 && (
 					<p style={{ fontWeight: "400", fontSize: "12px", color: "grey" }}>
 						No responses. Publish your form to start accepting responses...
