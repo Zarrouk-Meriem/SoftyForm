@@ -28,15 +28,7 @@ function Preview() {
 	const [createResponse] = useCreateResponseMutation();
 	const { data: questions, isLoading: isLoadingQuestions } =
 		useGetAllQuestionsQuery({});
-	let initialValues = { responses: [] };
-	useEffect(() => {
-		if (questions)
-			questions.map((question) =>
-				// initialValues.responses.push({ question_id: question.id })
-				console.log(question.id)
-			);
-	}, [questions]);
-	console.log("-----", initialValues);
+
 	const navigate = useNavigate();
 	const form = forms?.[0];
 	const formik = useFormik<FormValues>({
@@ -50,15 +42,17 @@ function Preview() {
 		},
 	});
 
+	const [test, setTest] = useState(0);
+
 	if (isLoadingForms || isLoadingQuestions) return <Spinner />;
 	if (submitted) navigate("./submit");
 	return (
 		<form className='form'>
 			<FormHeader form={form} />
-			<PreviewQuestions questions={questions} formik={formik} />
+			<PreviewQuestions key={test} questions={questions} formik={formik} />
 			<FormFooter
 				formik={formik}
-				submitted={submitted}
+				setTest={setTest}
 				setSubmitted={setSubmitted}
 			/>
 		</form>
@@ -66,7 +60,7 @@ function Preview() {
 }
 
 export default Preview;
-
+//fix
 // const getValidationSchema = (questions: Question[]) => {
 // 	return Yup.object().shape({
 // 		responses: Yup.array().of(

@@ -1,6 +1,6 @@
-.container {
-	z-index: 9999999;
-}
+// .activer {
+// 	z-index: 9999999999;
+// }
 .container-header {
 	display: flex;
 	align-items: center;
@@ -88,7 +88,7 @@
 		font-size: 15px;
 		gap: 5px;
 		align-items: center;
-		input {
+		.add-option {
 			border: 0;
 			font-weight: 400;
 			font-size: 13px;

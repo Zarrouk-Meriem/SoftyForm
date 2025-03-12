@@ -171,8 +171,9 @@ const Navbar = () => {
 										<Input id='antd-input' defaultValue={UNIQUE_LINK} />
 										<Button
 											onClick={async () => {
-												const valueToCopy =
-													document.getElementById("antd-input")?.value;
+												const valueToCopy = (
+													document.getElementById("antd-input") as any
+												)?.value;
 												await navigator.clipboard.writeText(valueToCopy);
 												setCopied(true);
 												toast.success("link copied!");
@@ -184,14 +185,13 @@ const Navbar = () => {
 									</Space.Compact>
 								}
 							>
-								<Link
-									to={"/form/questions"}
+								<div
 									style={{ display: "flex" }}
 									className='shared_navbar_toggler_button active-btn'
 								>
 									Published{" "}
 									<TbSettings className='shared_navbar_toggler_icon' />
-								</Link>
+								</div>
 							</Popover>
 						</>
 					)}

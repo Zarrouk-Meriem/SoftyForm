@@ -30,6 +30,7 @@ function Form() {
 		useGetAllQuestionsQuery({});
 
 	const [data, setData] = useState(questions);
+	const [addPos, setAddPos] = useState({});
 
 	useEffect(() => {
 		if (questions) setData(questions);
@@ -116,9 +117,8 @@ function Form() {
 				className='form'
 			>
 				<FormHeader formik={formik} />
-				<AddButton />
-
-				<Questions questions={data} />
+				<AddButton addPos={addPos} />
+				<Questions questions={data} setAddPos={setAddPos} />
 			</form>
 		</DndContext>
 	);

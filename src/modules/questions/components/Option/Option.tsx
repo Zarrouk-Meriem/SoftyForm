@@ -31,7 +31,7 @@ function Option({ option, i, type }: Props) {
 		enableReinitialize: true,
 		initialValues: option,
 		validationSchema: Yup.object().shape({
-			question: Yup.string().required("Question is required"),
+			content: Yup.string().required("Option is empty"),
 		}),
 		onSubmit: (values) => {
 			console.log("option submitted:", values);

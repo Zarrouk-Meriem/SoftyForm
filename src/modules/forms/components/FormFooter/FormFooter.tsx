@@ -1,11 +1,11 @@
-import { Button, ConfigProvider, Rate } from "antd";
+import { Button, ConfigProvider } from "antd";
 import { useLocation } from "react-router-dom";
 type Props = {
 	formik: any;
 	setSubmitted: any;
-	submitted: boolean;
+	setTest: any;
 };
-function FormFooter({ formik, setSubmitted }: Props) {
+function FormFooter({ formik, setSubmitted, setTest }: Props) {
 	const { pathname } = useLocation();
 	const response = pathname.split("/");
 	const isResponse = response[response.length - 1] === "response";
@@ -25,9 +25,9 @@ function FormFooter({ formik, setSubmitted }: Props) {
 					Submit
 				</Button>
 				<Button
-					onClick={() => {
-						formik.resetForm({ responses: [] });
-						console.log(formik.values);
+					onClick={(e) => {
+						e.preventDefault();
+						setTest((prev: number) => prev + 1);
 					}}
 					color='purple'
 					variant='filled'

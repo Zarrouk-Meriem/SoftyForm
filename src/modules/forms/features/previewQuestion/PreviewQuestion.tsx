@@ -36,10 +36,8 @@ type FileType =
 
 const PreviewQuestion = ({ question, formik, index }: Props) => {
 	const [uploadFile] = useUploadFileMutation();
-
 	const [starsColor, setStarsColor] = useState("#fadb14");
 	const [loading, setLoading] = useState(false);
-
 	const [fileNames, setFileNames] = useState([]);
 
 	useEffect(() => {
@@ -70,6 +68,9 @@ const PreviewQuestion = ({ question, formik, index }: Props) => {
 		});
 		return typesToAllow.join(", ");
 	};
+	function handleRemove(file: any) {
+		console.log(file);
+	}
 
 	const types = {
 		Image: [
@@ -192,7 +193,7 @@ const PreviewQuestion = ({ question, formik, index }: Props) => {
 					<div className='container-header'>
 						<h3 className='question'>{question.question}</h3>
 					</div>
-					<div className='container-body'>
+					<div className='container-body margin-top'>
 						{(question.type === "Dropdown" || question.type === "Checkbox") && (
 							<PreviewOptions
 								formik={formik}
@@ -259,7 +260,7 @@ const PreviewQuestion = ({ question, formik, index }: Props) => {
 									name='data'
 									accept={question.isSpecificTypes ? getAllowedTypes() : "*"}
 									maxCount={question.maxFileNum}
-									showUploadList={{ showRemoveIcon: false }}
+									showUploadList={true}
 									onChange={(e) => handleChange(e)}
 									onDrop={(e) => {
 										console.log("Dropped files", e.dataTransfer.files);
@@ -270,6 +271,7 @@ const PreviewQuestion = ({ question, formik, index }: Props) => {
 											onSuccess && onSuccess("ok");
 										}, 0);
 									}}
+									onRemove={handleRemove}
 								>
 									{!loading ? (
 										<BsInbox

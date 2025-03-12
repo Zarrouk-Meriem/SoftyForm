@@ -5,8 +5,13 @@ import {
 	verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import Question from "../Question/Question";
-
-const Questions = ({ questions }: any) => {
+import { useState } from "react";
+type Props = {
+	questions: any;
+	setAddPos?: any;
+};
+const Questions = ({ questions, setAddPos }: Props) => {
+	const [activeQuestionId, setActiveQuestionId] = useState(null);
 	if (!questions) return null;
 
 	return (
@@ -16,7 +21,16 @@ const Questions = ({ questions }: any) => {
 				strategy={verticalListSortingStrategy}
 			>
 				{questions?.map((question: object, index: number) => {
-					return <Question index={index} key={index} question={question} />;
+					return (
+						<Question
+							isActive={activeQuestionId === question.id}
+							setActiveQuestionId={setActiveQuestionId}
+							index={index}
+							key={index}
+							question={question}
+							setAddPos={setAddPos}
+						/>
+					);
 				})}
 			</SortableContext>
 		</div>

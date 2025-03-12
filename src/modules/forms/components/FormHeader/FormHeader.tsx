@@ -5,9 +5,11 @@ import { useCreateBlockNote } from "@blocknote/react";
 import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/core/fonts/inter.css";
 import "@blocknote/mantine/style.css";
+import { useEffect, useState } from "react";
 
 type Props = {
 	formik?: any;
+	setAddPos?: any;
 	form?: any;
 };
 function FormHeader({ formik, form }: Props) {
@@ -18,9 +20,28 @@ function FormHeader({ formik, form }: Props) {
 	const isResponse = pathname.split("/")[pathnameLength - 1] === "response";
 	const editor = useCreateBlockNote();
 
+	const [isActive, setIsActive] = useState(false);
+
+	const handleClick = () => {
+		setIsActive(true);
+	};
+
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (!(event.target as HTMLElement).closest(".form_header_container ")) {
+				setIsActive(false);
+			}
+		};
+
+		document.addEventListener("click", handleClickOutside);
+		return () => document.removeEventListener("click", handleClickOutside);
+	}, []);
 	if (isPreview || isResponse)
 		return (
-			<div className='form_header_container '>
+			<div
+				onClick={handleClick}
+				className={`form_header_container ${isActive ? "active" : ""} `}
+			>
 				<div className='form_header_container_input'>
 					<h1
 						style={{
@@ -39,7 +60,10 @@ function FormHeader({ formik, form }: Props) {
 			</div>
 		);
 	return (
-		<div className='form_header_container active'>
+		<div
+			onClick={handleClick}
+			className={`form_header_container ${isActive ? "active" : ""} `}
+		>
 			<div className='form_header_container_input'>
 				<Input
 					formik={formik}
@@ -49,14 +73,6 @@ function FormHeader({ formik, form }: Props) {
 					label=''
 					type='text'
 					required={false}
-				/>
-				<BlockNoteView
-					editor={editor}
-					sideMenu={true}
-					theme={"light"}
-					draggable={false}
-					formattingToolbar={true}
-					onChange={(value) => console.log(value)}
 				/>
 			</div>
 			<div className='form_header_container_input'>

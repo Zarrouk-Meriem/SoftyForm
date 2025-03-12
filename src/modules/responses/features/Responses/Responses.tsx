@@ -24,8 +24,8 @@ const ResponseCreateEdit = () => {
 
 	if (isLoadingResponses) return <Spinner />;
 	return (
-		<>
-			<Container>
+		<form className='form'>
+			<Container className='form_header_container '>
 				<div className='form_header'>
 					<h1 style={{ fontWeight: "400" }} className='responsesNum'>
 						{submissions?.length} responses
@@ -64,7 +64,7 @@ const ResponseCreateEdit = () => {
 					</span>
 				)}
 			</div>
-		</>
+		</form>
 	);
 };
 
