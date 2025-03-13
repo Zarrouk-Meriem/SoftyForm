@@ -199,7 +199,7 @@ const PreviewQuestion = ({ question, formik, index }: Props) => {
 		>
 			<Container>
 				<div>
-					<div className='container-header'>
+					<div className='container-header question-header'>
 						<h3 className='question'>{question.question}</h3>
 						{question.isRequired && (
 							<span className='red-star'>

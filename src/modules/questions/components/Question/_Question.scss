@@ -81,6 +81,12 @@
 					gap: 5px;
 				}
 			}
+			@media (max-width: 841px) {
+				width: 100%;
+			}
+			@media (max-width: 517px) {
+				width: 100%;
+			}
 		}
 	}
 	.options-adder {
@@ -92,7 +98,7 @@
 			border: 0;
 			font-weight: 400;
 			font-size: 13px;
-			width: 10%;
+
 			&:hover {
 				box-shadow: 0 1px 0 0 rgb(218, 220, 224);
 				// border-bottom: 1px solid rgb(218, 220, 224);

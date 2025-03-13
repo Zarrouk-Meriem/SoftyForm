@@ -1,8 +1,7 @@
 import "quill/dist/quill.core.css";
 import { useLocation } from "react-router-dom";
 import Input from "../../../shared/components/Input";
-import { useCreateBlockNote } from "@blocknote/react";
-import { BlockNoteView } from "@blocknote/mantine";
+
 import "@blocknote/core/fonts/inter.css";
 import "@blocknote/mantine/style.css";
 import { useEffect, useState } from "react";
@@ -18,7 +17,6 @@ function FormHeader({ formik, form }: Props) {
 
 	const pathnameLength = pathname.split("/").length;
 	const isResponse = pathname.split("/")[pathnameLength - 1] === "response";
-	const editor = useCreateBlockNote();
 
 	const [isActive, setIsActive] = useState(false);
 

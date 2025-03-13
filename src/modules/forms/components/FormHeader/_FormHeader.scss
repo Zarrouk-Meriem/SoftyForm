@@ -14,11 +14,18 @@
 	height: fit-content;
 	padding: 1rem;
 	border-top: 12px solid rgb(103, 58, 183);
+	@media (max-width: 841px) {
+		width: 30rem;
+	}
+	@media (max-width: 517px) {
+		width: 20rem;
+	}
 
 	.form_header_container_input {
 		display: flex;
 		flex-direction: column;
 		position: relative;
+
 		.underline {
 			background-color: red;
 			height: 2px;

@@ -133,25 +133,25 @@ const Navbar = () => {
 					{isArchived ? (
 						<BsArchiveFill
 							onClick={handleArchive}
-							className='shared_navbar_toggler_icon'
+							className='shared_navbar_toggler_icon not-prev-icon'
 							style={{ color: "var(--color-purple-800)" }}
 						/>
 					) : (
 						<BsArchive
 							onClick={handleArchive}
-							className='shared_navbar_toggler_icon'
+							className='shared_navbar_toggler_icon not-prev-icon'
 						/>
 					)}
 					{isStarred ? (
 						<GoStarFill
 							onClick={handleStar}
-							className='shared_navbar_toggler_icon'
+							className='shared_navbar_toggler_icon not-prev-icon'
 							style={{ color: "var(--color-yellow-300)" }}
 						/>
 					) : (
 						<GoStar
 							onClick={handleStar}
-							className='shared_navbar_toggler_icon'
+							className='shared_navbar_toggler_icon not-prev-icon'
 						/>
 					)}
 

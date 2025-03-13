@@ -73,19 +73,21 @@ const Navbar = () => {
 							</g>
 						</svg>
 					</div>
-					<h3 style={{ fontWeight: "400" }}>Preview mode</h3>
+					<h3 className='preview-text' style={{ fontWeight: "400" }}>
+						Preview mode
+					</h3>
 				</div>
 				<div className='shared_navbar_link'>
 					<div className='published'>
 						{isPublished ? (
 							<p style={{ color: "green" }} className='publishTag'>
 								<MdOutlinePublishedWithChanges className='icon' />
-								Published
+								<span className='pub-text'>Published</span>
 							</p>
 						) : (
 							<p style={{ color: "maroon" }} className='publishTag'>
 								<MdOutlineUnpublished className='icon' />
-								Unpublished
+								<span className='pub-text'>Unpublished</span>
 							</p>
 						)}
 					</div>
@@ -108,10 +110,12 @@ const Navbar = () => {
 						{!copied ? (
 							<>
 								<MdLink className='icon' />
-								copy responder link
+								<span className='copy-text'>copy responder link</span>
 							</>
 						) : (
-							<p>Copied! ✅</p>
+							<p>
+								<span className='copy-text'>Copied!</span> ✅
+							</p>
 						)}
 					</div>
 				</div>

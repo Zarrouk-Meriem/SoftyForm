@@ -3,6 +3,9 @@
 	align-items: center;
 	justify-content: baseline;
 	gap: 1rem;
+	@media (max-width: 841px) {
+		flex-direction: column-reverse;
+	}
 	.red-star {
 		color: red;
 	}
@@ -15,6 +18,9 @@
 	&_select {
 		height: 45px;
 		align-self: baseline;
+		@media (max-width: 841px) {
+			width: 100% !important;
+		}
 		// margin-top: 10px;
 	}
 	.icon {
@@ -70,34 +76,6 @@
 			line-height: 16px;
 			color: #70757a;
 			margin-bottom: 16px;
-		}
-		.constraints {
-			p {
-				font-size: 13px;
-			}
-			.select-maxNumFile {
-				width: 6rem;
-			}
-			display: flex;
-			flex-direction: column;
-			gap: 1rem;
-			width: 50%;
-			.ant-row {
-				gap: 5px;
-				.ant-col {
-					flex: 1 0 40%;
-					max-width: 50%;
-				}
-			}
-			.constraint {
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-
-				.checkboxGroup {
-					gap: 5px;
-				}
-			}
 		}
 	}
 	.input-form {
@@ -156,4 +134,8 @@
 			}
 		}
 	}
+}
+.question-header {
+	flex-direction: row;
+	gap: 1px;
 }
