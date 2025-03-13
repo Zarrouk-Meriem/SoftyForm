@@ -43,19 +43,6 @@ export const optionsApi = api.injectEndpoints({
 			},
 			invalidatesTags: [{ type: "options", id: "LIST" }],
 		}),
-		createOther: builder.mutation({
-			queryFn: async (id) => {
-				const { data, error } = await supabase
-					.from("options")
-					.insert([{ content: "", question_id: id, other: true }])
-					.select();
-
-				if (error) throw error;
-
-				return { data };
-			},
-			invalidatesTags: [{ type: "options", id: "LIST" }],
-		}),
 		updateOption: builder.mutation({
 			queryFn: async ({ id, updatedOption }) => {
 				const { data, error } = await supabase
@@ -77,6 +64,6 @@ export const {
 	useGetOptionsQuery,
 	useDeleteOptionMutation,
 	useCreateOptionMutation,
-	useCreateOtherMutation,
+
 	useUpdateOptionMutation,
 } = optionsApi;

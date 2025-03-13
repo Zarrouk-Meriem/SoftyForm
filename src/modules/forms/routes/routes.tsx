@@ -42,14 +42,14 @@ const routes: RouteConfig[] = [
 		exact: true,
 		guard: GuestGuard,
 		path: PATH.FORM_PREVIEW,
-		component: lazy(() => import("../features/preview/preview")),
+		component: lazy(() => import("../features/preview/previewRespond")),
 		layout: MainLayout,
 	},
 	{
 		exact: true,
 		guard: GuestGuard,
 		path: PATH.FORM_RESPONSE,
-		component: lazy(() => import("../features/preview/preview")),
+		component: lazy(() => import("../features/preview/previewRespond")),
 		layout: MainLayout,
 	},
 	{

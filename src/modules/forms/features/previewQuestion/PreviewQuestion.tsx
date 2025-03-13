@@ -21,6 +21,7 @@ import {
 	useUploadFileMutation,
 } from "../../data/upload";
 import { BsInbox } from "react-icons/bs";
+import { ErrorMessage } from "formik";
 
 type Props = {
 	question: any;
@@ -73,9 +74,8 @@ const PreviewQuestion = ({ question, formik, index }: Props) => {
 	};
 	const [deleteFile] = useDeleteFileMutation();
 	function handleRemove(file: any) {
-		setFileList(fileList.filter((el) => el.name !== file.name));
+		setFileList(fileList.filter((el) => el.uid !== file.uid));
 		deleteFile(file);
-		console.log(file);
 		return true;
 	}
 
@@ -166,9 +166,12 @@ const PreviewQuestion = ({ question, formik, index }: Props) => {
 			}
 			try {
 				const { data } = await uploadFile(file);
-
+				console.log(file);
 				if (data) {
-					setFileList([...fileList, file]);
+					setFileList([
+						...fileList,
+						{ uid: file.uid, name: file.name, type: file.type },
+					]);
 				}
 			} catch (error) {
 				message.error(`Upload failed`);
@@ -198,6 +201,11 @@ const PreviewQuestion = ({ question, formik, index }: Props) => {
 				<div>
 					<div className='container-header'>
 						<h3 className='question'>{question.question}</h3>
+						{question.isRequired && (
+							<span className='red-star'>
+								<b>*</b>
+							</span>
+						)}
 					</div>
 					<div className='container-body margin-top'>
 						{(question.type === "Dropdown" || question.type === "Checkbox") && (
@@ -267,7 +275,11 @@ const PreviewQuestion = ({ question, formik, index }: Props) => {
 									accept={question.isSpecificTypes ? getAllowedTypes() : "*"}
 									maxCount={question.maxFileNum}
 									showUploadList={true}
-									onChange={(e) => handleChange(e)}
+									onChange={(e) => {
+										handleChange(e);
+										console.log(e);
+									}}
+									multiple
 									onDrop={(e) => {
 										console.log("Dropped files", e.dataTransfer.files);
 									}}
@@ -294,6 +306,9 @@ const PreviewQuestion = ({ question, formik, index }: Props) => {
 										Click or drag file to this area to upload
 									</p>
 								</Dragger>
+								{formik.errors.data ? (
+									<span className='error-message'>{formik.errors}</span>
+								) : null}
 							</div>
 						)}
 					</div>

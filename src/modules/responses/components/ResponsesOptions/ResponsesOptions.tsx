@@ -33,7 +33,7 @@ function ResponsesOptions({ response, question, questionId }: Props) {
 			{question.type === "Dropdown" && Array.isArray(options) && (
 				<div className='options' style={{ color: "silver" }}>
 					{options?.map((option) => (
-						<div className='option'>
+						<div className='option' key={option.id}>
 							{Array.isArray(response) ? (
 								response?.selectedOptions.find(
 									(el: any) => el === option.content

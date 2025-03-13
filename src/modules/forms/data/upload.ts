@@ -17,8 +17,6 @@ export const formsApi = api.injectEndpoints({
 		}),
 		deleteFile: builder.mutation({
 			queryFn: async (file: any) => {
-				alert("m working too");
-
 				const { data, error } = await supabase.storage
 					.from("upload")
 					.remove([`${file.name}-${file.uid}`]);

@@ -3,6 +3,9 @@
 	align-items: center;
 	justify-content: baseline;
 	gap: 1rem;
+	.red-star {
+		color: red;
+	}
 	&_image-upload {
 		color: grey;
 		cursor: pointer;

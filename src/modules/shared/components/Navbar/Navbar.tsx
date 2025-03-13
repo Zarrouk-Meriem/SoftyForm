@@ -202,7 +202,7 @@ const Navbar = () => {
 						onCancel={handleCancel}
 						className='modal'
 					>
-						<Space.Compact style={{ width: "100%" }}>
+						{/* <Space.Compact style={{ width: "100%" }}>
 							<Input id='antd-input' defaultValue={UNIQUE_LINK} />
 							<Button
 								onClick={async () => {
@@ -214,9 +214,10 @@ const Navbar = () => {
 								type='primary'
 								icon={<LuLink />}
 							/>
-						</Space.Compact>
-
-						{copied && <p>Copied! ✅ </p>}
+						</Space.Compact> */}
+						{/* {copied && <p>Copied! ✅ </p>} */}
+						<h2>Do you want to publish your form?</h2>
+						<h4>(form once published could not be unpublished)</h4>
 					</Modal>
 				</div>
 			</div>

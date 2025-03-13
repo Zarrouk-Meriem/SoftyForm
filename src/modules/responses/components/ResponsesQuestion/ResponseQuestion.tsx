@@ -6,12 +6,13 @@ import Input from "../../../shared/components/Input";
 import { Avatar, List, Rate } from "antd";
 
 import { BiSolidLike } from "react-icons/bi";
-import { FaHeart, FaStar } from "react-icons/fa";
+import { FaHeart, FaRegFilePdf, FaStar } from "react-icons/fa";
 
 import { ConfigProvider } from "antd";
 
 import { useFormik } from "formik";
 import ResponsesOptions from "../ResponsesOptions/ResponsesOptions";
+import { LuFileVideo } from "react-icons/lu";
 
 type Props = {
 	question: any;
@@ -29,7 +30,6 @@ interface FormValues {
 
 const ResponseQuestion = ({ response, question, index }: Props) => {
 	const [starsColor, setStarsColor] = useState("#fadb14");
-	console.log(response);
 
 	const formik = useFormik<FormValues>({
 		enableReinitialize: true,
@@ -119,23 +119,50 @@ const ResponseQuestion = ({ response, question, index }: Props) => {
 						)}
 						{question.type === "File Upload" && (
 							<div className='upload'>
-								{/* <List
+								<List
+									bordered
 									itemLayout='horizontal'
-									dataSource={data}
-									renderItem={(item, index) => (
+									dataSource={response?.file}
+									renderItem={(file) => (
 										<List.Item>
 											<List.Item.Meta
 												avatar={
-													<Avatar
-														src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`}
-													/>
+													file.type.includes("pdf") ? (
+														<FaRegFilePdf
+															style={{
+																color: "var(--danger)",
+																height: "3rem",
+																width: "3rem",
+															}}
+														/>
+													) : file.type.includes("video") ? (
+														<LuFileVideo
+															style={{
+																color: "violet",
+																height: "3rem",
+																width: "3rem",
+															}}
+														/>
+													) : (
+														<Avatar
+															shape='square'
+															size={50}
+															src={`https://jqjhjdczamcwscpfhcxi.supabase.co/storage/v1/object/public/upload/${file.name}-${file.uid}`}
+														/>
+													)
 												}
-												title={<a href='https://ant.design'>{item.title}</a>}
-												description='Ant Design, a design language for background applications, is refined by Ant UED Team'
+												title={
+													<a
+														href={`https://jqjhjdczamcwscpfhcxi.supabase.co/storage/v1/object/public/upload/${file.name}-${file.uid}`}
+													>
+														{file.name}
+													</a>
+												}
+												description={file.type}
 											/>
 										</List.Item>
 									)}
-								/> */}
+								/>
 							</div>
 						)}
 					</div>
