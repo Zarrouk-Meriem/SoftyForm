@@ -48,12 +48,7 @@ function Preview() {
 	const getValidationSchema = Yup.object().shape({
 		responses: Yup.array().of(
 			Yup.object().shape({
-				textAnswer: Yup.string().when("type", {
-					is: (type: Question["type"]) =>
-						type === "Short Text" || type === "Paragraph",
-					then: (schema) => schema.required("This field is required"),
-					otherwise: (schema) => schema.notRequired(),
-				}),
+				textAnswer: Yup.string().required("isRequired!"),
 
 				rate: Yup.number().when("type", {
 					is: (type: Question["type"]) => type === "Rating",
@@ -73,6 +68,7 @@ function Preview() {
 			})
 		),
 	});
+	console.log(getValidationSchema);
 	const navigate = useNavigate();
 
 	const form = forms?.[0];
@@ -87,6 +83,7 @@ function Preview() {
 			createResponse(values);
 		},
 	});
+	console.log(formik.errors);
 
 	const [test, setTest] = useState(0);
 

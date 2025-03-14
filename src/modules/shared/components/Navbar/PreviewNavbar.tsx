@@ -125,8 +125,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-// <div className='shared_navbar_toggler_buttons'>
-// 	<ThemeToggler />
-// 	<LanguageToggler />
-// </div>;

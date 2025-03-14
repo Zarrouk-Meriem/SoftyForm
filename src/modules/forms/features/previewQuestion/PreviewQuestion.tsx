@@ -21,7 +21,6 @@ import {
 	useUploadFileMutation,
 } from "../../data/upload";
 import { BsInbox } from "react-icons/bs";
-import { ErrorMessage } from "formik";
 
 type Props = {
 	question: any;
@@ -74,7 +73,7 @@ const PreviewQuestion = ({ question, formik, index }: Props) => {
 	};
 	const [deleteFile] = useDeleteFileMutation();
 	function handleRemove(file: any) {
-		setFileList(fileList.filter((el) => el.uid !== file.uid));
+		setFileList(fileList.filter((el: any) => el.uid !== file.uid));
 		deleteFile(file);
 		return true;
 	}
@@ -124,7 +123,7 @@ const PreviewQuestion = ({ question, formik, index }: Props) => {
 		Drawing: [
 			"application/vnd.google-apps.drawing", // Google Drawings
 			"image/svg+xml", // SVG drawings
-			"application/postscript", // .ai, .eps (if needed)
+			"application/postscript", // .ai, .eps
 		],
 
 		Audio: [
@@ -279,7 +278,6 @@ const PreviewQuestion = ({ question, formik, index }: Props) => {
 										handleChange(e);
 										console.log(e);
 									}}
-									multiple
 									onDrop={(e) => {
 										console.log("Dropped files", e.dataTransfer.files);
 									}}
