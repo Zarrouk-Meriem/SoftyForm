@@ -168,8 +168,9 @@ const Question = ({
 		},
 	];
 
-	function handleAddOption() {
+	function handleAddOption(e: any) {
 		createOption(formik.values.id);
+		console.log(e);
 	}
 
 	const style = {
