@@ -6,6 +6,7 @@ import Options from "../Options/Options";
 import { useFormik } from "formik";
 
 import {
+	MdOutlineDragIndicator,
 	MdOutlineShortText,
 	MdOutlineSquare,
 	MdOutlineStarBorderPurple500,
@@ -33,6 +34,7 @@ import {
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { RiDraggable, RiDragMove2Fill } from "react-icons/ri";
 
 type Props = {
 	question: any;
@@ -211,12 +213,13 @@ const Question = ({
 				ref={setNodeRef}
 				style={style}
 				data-dragging={isDragging}
-				{...listeners}
+				// {...listeners}
 				{...attributes}
 				onSubmit={(e: any) => formik.handleSubmit(e)}
 				onBlur={(e: any) => formik.handleSubmit(e)}
 				onClick={handleClick}
 			>
+				<RiDraggable className='drag-icon' {...listeners} />
 				<div className='container-header'>
 					<Input
 						className='question-input'

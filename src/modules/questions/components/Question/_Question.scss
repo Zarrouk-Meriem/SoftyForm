@@ -1,6 +1,17 @@
 // .activer {
 // 	z-index: 9999999999;
 // }
+.drag-icon {
+	transform: rotate(90deg);
+	align-self: center;
+	height: 1.6rem;
+	width: 2rem;
+	border-radius: 1rem;
+	&:hover,
+	:visited {
+		color: var(--color-purple-800);
+	}
+}
 .container-header {
 	display: flex;
 	align-items: center;

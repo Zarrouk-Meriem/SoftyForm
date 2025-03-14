@@ -48,12 +48,17 @@ const Input: React.FC<IInputProps> = ({
 	index,
 	...props
 }) => {
-	const [showPassword, setShowPassword] = useState(true);
 	const [updateOption] = useUpdateOptionMutation();
 	function handleBlur(e: any) {
 		formik.handleBlur(e);
 		if (option)
 			updateOption({ id: formik.values.id, updatedOption: formik.values });
+	}
+	function handleChange(e: any) {
+		formik.handleChange(e);
+		if (index !== undefined)
+			formik.setFieldValue(`responses[${index}].question_id`, question_id);
+		// console.log(e.target.v);
 	}
 
 	return (
@@ -70,44 +75,21 @@ const Input: React.FC<IInputProps> = ({
 					`${rounded ? "input-rounded" : ""}`,
 				].join(" ")}
 			>
-				{icon && <img src={icon} alt='icon' className='icon' />}
 				<input
 					placeholder={placeholder}
 					id={name}
 					name={name}
 					type={
-						type === "password"
-							? showPassword
-								? "password"
-								: "text"
-							: type === "text"
-								? "text"
-								: type === "email"
-									? "email"
-									: "number"
+						type === "text" ? "text" : type === "email" ? "email" : "number"
 					}
 					className={[className, `input-${size}`, `input-${variant}`].join(" ")}
 					onBlur={handleBlur}
-					onChange={(e) => {
-						formik.handleChange(e);
-						formik.setFieldValue(
-							`responses[${index}].question_id`,
-							question_id
-						);
-					}}
+					onChange={handleChange}
 					value={formik.values[name]}
 					onSubmit={formik.handleSubmit}
 					defaultValue={defaultValue}
 					{...props}
 				/>
-				{type === "password" && (
-					<img
-						src={showPassword ? eyeOn : eyeOff}
-						alt='eye-icon'
-						className='eye-icon'
-						onClick={() => setShowPassword(!showPassword)}
-					/>
-				)}
 			</div>
 
 			{formik.touched[name] && formik.errors[name] ? (

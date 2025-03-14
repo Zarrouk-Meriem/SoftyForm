@@ -50,12 +50,7 @@ function Preview() {
 			Yup.object().shape({
 				textAnswer: Yup.string().required("isRequired!"),
 
-				rate: Yup.number().when("type", {
-					is: (type: Question["type"]) => type === "Rating",
-					then: (schema) => schema.required("Please provide a rating"),
-					otherwise: (schema) => schema.notRequired(),
-				}),
-
+				rate: Yup.number().nullable().required("provide a rate please!"),
 				data: Yup.array()
 					.of(
 						Yup.object().shape({
