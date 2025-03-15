@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+// @ts-nocheck
 import { useEffect, useState } from "react";
 
 import Container from "../../../questions/components/Container/Container";
@@ -181,9 +184,14 @@ const PreviewQuestion = ({ question, formik, index }: Props) => {
 		setLoading(false);
 	};
 	useEffect(() => {
+		formik.setFieldValue(
+			`responses[${index}].is_required`,
+			question.isRequired
+		);
 		formik.setFieldValue(`responses[${index}].question_id`, question.id);
-		formik.setFieldValue(`responses[${index}].file`, fileList);
-		console.log(fileList);
+		formik.setFieldValue(`responses[${index}].type`, question.type);
+		if (question.type === "File Upload")
+			formik.setFieldValue(`responses[${index}].file`, fileList);
 	}, [fileList]);
 	return (
 		<ConfigProvider
@@ -199,12 +207,12 @@ const PreviewQuestion = ({ question, formik, index }: Props) => {
 			<Container>
 				<div>
 					<div className='container-header question-header'>
-						<h3 className='question'>{question.question}</h3>
 						{question.isRequired && (
 							<span className='red-star'>
 								<b>*</b>
 							</span>
 						)}
+						<h3 className='question'>{question.question}</h3>
 					</div>
 					<div className='container-body margin-top'>
 						{(question.type === "Dropdown" || question.type === "Checkbox") && (
@@ -233,6 +241,14 @@ const PreviewQuestion = ({ question, formik, index }: Props) => {
 											`responses[${index}].question_id`,
 											question.id
 										);
+										formik.setFieldValue(
+											`responses[${index}].is_required`,
+											question.isRequired
+										);
+										formik.setFieldValue(
+											`responses[${index}].type`,
+											question.type
+										);
 										formik.setFieldValue(`responses[${index}].rate`, value);
 									}}
 								/>
@@ -249,7 +265,8 @@ const PreviewQuestion = ({ question, formik, index }: Props) => {
 										: "Long answer text"
 								}
 								size='sm'
-								name={`responses[${index}].textAnswer`}
+								name={question.type === "Short Text" ? "shortText" : "longText"}
+								id={question.type === "Short Text" ? "shortText" : "longText"}
 								type='text'
 								required={question.isRequired}
 								formik={formik}
@@ -304,11 +321,14 @@ const PreviewQuestion = ({ question, formik, index }: Props) => {
 										Click or drag file to this area to upload
 									</p>
 								</Dragger>
-								{formik.errors.data ? (
-									<span className='error-message'>{formik.errors}</span>
-								) : null}
 							</div>
 						)}
+						{formik.errors.responses?.[index as number] &&
+						question.isRequired ? (
+							<p className='error-message'>
+								{...Object.values(formik.errors.responses?.[index as number])}
+							</p>
+						) : null}
 					</div>
 				</div>
 			</Container>

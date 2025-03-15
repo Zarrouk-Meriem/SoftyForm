@@ -5,7 +5,8 @@ import PreviewQuestion from "../ResponsesQuestion/ResponseQuestion";
 type Response = {
 	question_id: number;
 	rate?: number;
-	textAnswer?: string;
+	shortText?: string;
+	longText?: string;
 	file?: string[];
 	selectedOptions?: [] | "";
 };

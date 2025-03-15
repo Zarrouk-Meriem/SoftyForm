@@ -18,7 +18,7 @@ function AddButton({
 	},
 }: Props) {
 	const [createQuestion] = useCreateQuestionMutation();
-	let { right, top, bottom, left, height, width } = addPos;
+	let { right, top, bottom, left, width } = addPos;
 
 	return (
 		<div

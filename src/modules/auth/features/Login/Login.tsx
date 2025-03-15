@@ -1,14 +1,11 @@
-import { useAppDispatch } from "../../../shared/store";
 import { useFormik } from "formik";
-import { useState } from "react";
+
 import * as Yup from "yup";
 import Input from "../../../shared/components/Input";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
 	const navigate = useNavigate();
-	const dispatch = useAppDispatch();
-	const [submitting, setSubmitting] = useState<boolean>(false);
 
 	const formik = useFormik({
 		initialValues: {
@@ -21,7 +18,7 @@ const Login = () => {
 				.required("Password is required")
 				.min(6, "Password is too short!"),
 		}),
-		onSubmit: (values) => {
+		onSubmit: () => {
 			navigate("/form/questions");
 		},
 	});
@@ -52,11 +49,7 @@ const Login = () => {
 					/>
 				</div>
 
-				<button
-					type='submit'
-					className='login_feature_container_btn'
-					disabled={submitting}
-				>
+				<button type='submit' className='login_feature_container_btn'>
 					Login
 				</button>
 			</form>

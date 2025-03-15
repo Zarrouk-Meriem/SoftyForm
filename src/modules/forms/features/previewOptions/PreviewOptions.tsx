@@ -37,9 +37,15 @@ function PreviewOptions({ formik, question, questionId, index }: Props) {
 					onChange={(values) => {
 						setCheckedOptions(values);
 						formik.setFieldValue(
+							`responses[${index}].is_required`,
+							question.isRequired
+						);
+						formik.setFieldValue(
 							`responses[${index}].question_id`,
 							question.id
 						);
+
+						formik.setFieldValue(`responses[${index}].type`, question.type);
 						formik.setFieldValue(`responses[${index}].selectedOptions`, values);
 					}}
 					style={{ flexDirection: "column", gap: "0.6rem" }}
@@ -47,11 +53,17 @@ function PreviewOptions({ formik, question, questionId, index }: Props) {
 			)}
 			{question.type === "Dropdown" && Array.isArray(options) && (
 				<Select
+					id='selectedOptions'
 					onChange={(value) => {
 						formik.setFieldValue(
 							`responses[${index}].question_id`,
 							question.id
 						);
+						formik.setFieldValue(
+							`responses[${index}].is_required`,
+							question.isRequired
+						);
+						formik.setFieldValue(`responses[${index}].type`, question.type);
 						formik.setFieldValue(`responses[${index}].selectedOptions`, value);
 					}}
 					style={{ width: 160, height: 50, borderRadius: 0 }}

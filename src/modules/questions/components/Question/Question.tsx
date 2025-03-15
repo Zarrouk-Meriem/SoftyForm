@@ -6,7 +6,6 @@ import Options from "../Options/Options";
 import { useFormik } from "formik";
 
 import {
-	MdOutlineDragIndicator,
 	MdOutlineShortText,
 	MdOutlineSquare,
 	MdOutlineStarBorderPurple500,
@@ -34,7 +33,7 @@ import {
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { RiDraggable, RiDragMove2Fill } from "react-icons/ri";
+import { RiDraggable } from "react-icons/ri";
 
 type Props = {
 	question: any;
@@ -170,7 +169,7 @@ const Question = ({
 
 	function handleAddOption(e: any) {
 		createOption(formik.values.id);
-		console.log(e);
+		console.log((e.target as HTMLElement).closest(".option"));
 	}
 
 	const style = {

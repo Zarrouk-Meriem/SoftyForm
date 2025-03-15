@@ -1,3 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+// @ts-nocheck
 import { useEffect, useState } from "react";
 
 import Container from "../../../questions/components/Container/Container";
@@ -22,7 +25,8 @@ type Props = {
 interface FormValues {
 	responses: {
 		question_id: number;
-		textAnswer?: string;
+		shortText?: string;
+		longText?: string;
 		rate?: number;
 		file?: string[];
 	}[];
@@ -107,13 +111,13 @@ const ResponseQuestion = ({ response, question, index }: Props) => {
 							<Input
 								className='short-long-input'
 								variant='secondary'
-								value={response?.textAnswer}
 								size='sm'
-								name={"textAnswer"}
 								type='text'
 								question_id={question.id}
+								id={index}
 								index={index}
 								formik={formik}
+								question_type={question.type}
 								disabled
 							/>
 						)}

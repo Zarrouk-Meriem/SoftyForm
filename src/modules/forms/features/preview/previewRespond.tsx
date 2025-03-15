@@ -7,7 +7,7 @@ import { useGetFormsQuery } from "../../data/forms";
 import PreviewQuestions from "../PreviewQuestions/PreviewQuestions";
 
 import { useCreateResponseMutation } from "../../../responses/data/responses";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as Yup from "yup";
 
 import toast from "react-hot-toast";
@@ -20,9 +20,11 @@ function Preview() {
 	interface FormValues {
 		responses: {
 			question_id: number;
-			textAnswer?: string;
+			shortText?: string;
+			longText?: string;
 			rate?: number;
-			file?: string[];
+			data?: string[];
+			selectedOptions?: string[] | string;
 		}[];
 	}
 
@@ -30,60 +32,99 @@ function Preview() {
 	const [createResponse] = useCreateResponseMutation();
 	const { data: questions, isLoading: isLoadingQuestions } =
 		useGetAllQuestionsQuery({});
-	interface Question {
-		id: number;
-		type:
-			| "Short Text"
-			| "Paragraph"
-			| "Dropdown"
-			| "Checkbox"
-			| "Rating"
-			| "File Upload";
-		isRequired?: boolean;
-		maxFileSize?: number;
-		maxFileNum?: number;
-		specificTypes?: string[];
-	}
 
 	const getValidationSchema = Yup.object().shape({
 		responses: Yup.array().of(
 			Yup.object().shape({
-				textAnswer: Yup.string().required("isRequired!"),
+				shortText: Yup.string().when(["type", "is_required"], {
+					is: (type: string, is_required: boolean) =>
+						type === "Short Text" && is_required,
+					then: (schema) =>
+						schema
+							.max(10, "Please shorten your answer")
+							.required("This field is empty"),
+					otherwise: (schema) => schema.notRequired(),
+				}),
 
-				rate: Yup.number().nullable().required("provide a rate please!"),
+				longText: Yup.string().when(["type", "is_required"], {
+					is: (type: string, is_required: boolean) =>
+						type === "Paragraph" && is_required,
+					then: (schema) =>
+						schema
+							.min(5, "Your answer is too short")
+							.required("This field is empty"),
+					otherwise: (schema) => schema.notRequired(),
+				}),
+
+				rate: Yup.number()
+					.nullable()
+					.when(["type", "is_required"], {
+						is: (type: string, is_required: boolean) =>
+							type === "Rating" && is_required,
+						then: (schema) => schema.required("Please provide a rating"),
+						otherwise: (schema) => schema.notRequired(),
+					}),
+
 				data: Yup.array()
 					.of(
 						Yup.object().shape({
-							name: Yup.string(),
-							uid: Yup.string(),
+							name: Yup.string().required("File name is required"),
+							uid: Yup.string().required("File UID is required"),
 						})
 					)
-					.min(1, "At least one file is required")
-					.required("This field is required"),
+					.when(["type", "is_required"], {
+						is: (type: string, is_required: boolean) =>
+							type === "File Upload" && is_required,
+						then: (schema) =>
+							schema
+								.min(1, "At least one file is required")
+								.required("This field is required"),
+						otherwise: (schema) => schema.notRequired(),
+					}),
+
+				selectedOptions: Yup.mixed().test(
+					"dropdown-or-checkbox",
+					"Please select at least one option",
+					(value, context) => {
+						const { type, is_required } = context.parent;
+
+						if (!is_required) return true;
+
+						if (type === "Dropdown") {
+							return typeof value === "string" && value.length > 0;
+						}
+
+						if (type === "Checkbox") {
+							return Array.isArray(value) && value.length > 0;
+						}
+
+						return true;
+					}
+				),
 			})
 		),
 	});
-	console.log(getValidationSchema);
-	const navigate = useNavigate();
 
+	const navigate = useNavigate();
 	const form = forms?.[0];
 	const formik = useFormik<FormValues>({
 		enableReinitialize: true,
 		initialValues: { responses: [] },
-		//fix
 		validationSchema: getValidationSchema,
 		onSubmit: (values) => {
 			console.log("Response submitted:", values);
 			toast.success("form has been successfully submitted!");
-			createResponse(values);
+
+			{
+				createResponse(values);
+				if (submitted) navigate("./submit");
+			}
 		},
 	});
-	console.log(formik.errors);
 
 	const [test, setTest] = useState(0);
 
 	if (isLoadingForms || isLoadingQuestions) return <Spinner />;
-	if (submitted) navigate("./submit");
 	return (
 		<form className='form'>
 			<FormHeader form={form} />
