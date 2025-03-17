@@ -7,7 +7,7 @@ import { useGetFormsQuery } from "../../data/forms";
 import PreviewQuestions from "../PreviewQuestions/PreviewQuestions";
 
 import { useCreateResponseMutation } from "../../../responses/data/responses";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import * as Yup from "yup";
 
 import toast from "react-hot-toast";

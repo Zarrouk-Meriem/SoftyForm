@@ -29,6 +29,7 @@ interface IInputProps extends HTMLAttributes<HTMLInputElement> {
 	question_id?: number;
 	question_type?: string;
 	index?: number;
+	ref?: any;
 }
 
 const Input: React.FC<IInputProps> = ({
@@ -48,7 +49,7 @@ const Input: React.FC<IInputProps> = ({
 	question_id,
 	question_type,
 	index,
-
+	ref,
 	...props
 }) => {
 	const [showPassword, setShowPassword] = useState(true);
@@ -63,7 +64,6 @@ const Input: React.FC<IInputProps> = ({
 		<div className='input-form'>
 			<label htmlFor={name} className='label'>
 				{label}
-				{/* {required && <span className='red-star'> *</span>} */}
 			</label>
 
 			<div
@@ -75,6 +75,7 @@ const Input: React.FC<IInputProps> = ({
 			>
 				{icon && <img src={icon} alt='icon' className='icon' />}
 				<input
+					ref={ref}
 					placeholder={placeholder}
 					id={name}
 					name={name}
@@ -90,10 +91,6 @@ const Input: React.FC<IInputProps> = ({
 							formik.setFieldValue(
 								`responses[${index}].question_id`,
 								question_id
-							);
-							formik.setFieldValue(
-								`responses[${index}].is_required`,
-								question.isRequired
 							);
 						}
 					}}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import * as Yup from "yup";
 import Input from "../../../shared/components/Input";
@@ -41,6 +41,7 @@ type Props = {
 	isActive?: boolean;
 	setActiveQuestionId?: any;
 	setAddPos?: any;
+	activeId?: any;
 };
 
 const Question = ({
@@ -48,6 +49,7 @@ const Question = ({
 	isActive,
 	setActiveQuestionId,
 	setAddPos,
+	activeId,
 }: Props) => {
 	const { attributes, listeners, setNodeRef, transform, isDragging } =
 		useSortable({
@@ -70,6 +72,15 @@ const Question = ({
 			updateQuestion({ id: values.id, updatedQuestion: values });
 		},
 	});
+	const inputRef = useRef<HTMLInputElement | null>(null);
+
+	useEffect(() => {
+		if (inputRef.current) {
+			inputRef.current.focus();
+
+			console.log(inputRef);
+		}
+	}, [question]);
 
 	const [starsColor, setStarsColor] = useState("#fadb14");
 	const [isSpecific, setIsSpecific] = useState(formik.values.isSpecificTypes);
@@ -174,6 +185,7 @@ const Question = ({
 
 	const style = {
 		transform: CSS.Transform.toString(transform),
+		animation: isDragging ? "none" : "bounceBack 200ms ease-in-out",
 	};
 
 	const handleClick = () => {
@@ -209,17 +221,25 @@ const Question = ({
 		>
 			<div
 				id={question.id}
-				className={`question container ${isActive ? "active" : ""}`}
+				className={`question  container ${isActive ? "active" : ""} `}
 				ref={setNodeRef}
-				style={style}
 				data-dragging={isDragging}
-				// {...listeners}
 				{...attributes}
 				onSubmit={(e: any) => formik.handleSubmit(e)}
 				onBlur={(e: any) => formik.handleSubmit(e)}
 				onClick={handleClick}
+				style={style}
 			>
-				<RiDraggable className='drag-icon' {...listeners} />
+				<RiDraggable
+					className={`drag-icon question-item ${activeId === question.id ? "is-dragging" : ""}`}
+					style={{
+						cursor:
+							activeId === question.id
+								? "grabbing !important"
+								: "grab !important",
+					}}
+					{...listeners}
+				/>
 				<div className='container-header'>
 					<Input
 						className='question-input'
@@ -231,6 +251,7 @@ const Question = ({
 						type='text'
 						required={false}
 						formik={formik}
+						ref={inputRef} // Attach the ref to the input field
 						disabled={isLoading.isLoading}
 					/>
 					<Select

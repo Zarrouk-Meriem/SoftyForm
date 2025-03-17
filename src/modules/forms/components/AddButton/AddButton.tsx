@@ -27,7 +27,6 @@ function AddButton({
 					? {
 							right: `${right}px`,
 							left: `${width + 8}px`,
-
 							top: `${top - 120}px`,
 							bottom: `${bottom}px`,
 							transition: "all 0.2s ease-out",

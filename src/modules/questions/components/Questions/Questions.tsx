@@ -9,6 +9,7 @@ import { useState } from "react";
 type Props = {
 	questions: any;
 	setAddPos?: any;
+	activeId: any;
 };
 type Question = {
 	id: number;
@@ -25,7 +26,7 @@ type Question = {
 	order_number: number;
 	question: string;
 };
-const Questions = ({ questions, setAddPos }: Props) => {
+const Questions = ({ questions, setAddPos, activeId }: Props) => {
 	const [activeQuestionId, setActiveQuestionId] = useState(null);
 	if (!questions) return null;
 
@@ -44,6 +45,7 @@ const Questions = ({ questions, setAddPos }: Props) => {
 							key={index}
 							question={question}
 							setAddPos={setAddPos}
+							activeId={activeId}
 						/>
 					);
 				})}

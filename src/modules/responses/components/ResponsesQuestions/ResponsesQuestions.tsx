@@ -22,13 +22,16 @@ const ResponsesQuestions = ({ responses }: Props) => {
 
 	return (
 		<div className='questions'>
-			{questions?.map((question) => (
-				<PreviewQuestion
-					key={question.id}
-					response={responses.find((el) => el?.question_id === question.id)}
-					question={question}
-				/>
-			))}
+			{questions?.map(
+				(question) =>
+					question.question && (
+						<PreviewQuestion
+							key={question.id}
+							response={responses.find((el) => el?.question_id === question.id)}
+							question={question}
+						/>
+					)
+			)}
 		</div>
 	);
 };

@@ -193,6 +193,7 @@ const PreviewQuestion = ({ question, formik, index }: Props) => {
 		if (question.type === "File Upload")
 			formik.setFieldValue(`responses[${index}].file`, fileList);
 	}, [fileList]);
+
 	return (
 		<ConfigProvider
 			theme={{
@@ -242,9 +243,10 @@ const PreviewQuestion = ({ question, formik, index }: Props) => {
 											question.id
 										);
 										formik.setFieldValue(
-											`responses[${index}].is_required`,
+											`responses[${index}].id_required`,
 											question.isRequired
 										);
+
 										formik.setFieldValue(
 											`responses[${index}].type`,
 											question.type
@@ -265,7 +267,11 @@ const PreviewQuestion = ({ question, formik, index }: Props) => {
 										: "Long answer text"
 								}
 								size='sm'
-								name={question.type === "Short Text" ? "shortText" : "longText"}
+								name={
+									question.type === "Short Text"
+										? `responses[${index}].shortText`
+										: `responses[${index}].longText`
+								}
 								id={question.type === "Short Text" ? "shortText" : "longText"}
 								type='text'
 								required={question.isRequired}

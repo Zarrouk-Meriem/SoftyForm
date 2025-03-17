@@ -99,6 +99,7 @@
 			width: 1.5rem;
 			padding: 0;
 			color: grey;
+			cursor: pointer;
 		}
 		.duplicate:hover {
 			color: rgb(138, 4, 150);
@@ -110,6 +111,7 @@
 		}
 		.duplicate-btn,
 		.delete-btn {
+			cursor: pointer;
 			border: none;
 			background: none;
 		}

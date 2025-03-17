@@ -21,6 +21,7 @@ import {
 	useSensor,
 	useSensors,
 	type DragEndEvent,
+	type DragStartEvent,
 } from "@dnd-kit/core";
 import { arrayMove, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 
@@ -67,7 +68,14 @@ function Form() {
 	});
 	const [updateQuestion] = useUpdateQuestionMutation();
 
+	const [activeId, setActiveId] = useState<string | null>(null);
+
+	function handleDragStart(event: DragStartEvent) {
+		setActiveId(event.active.id as string | null);
+	}
+
 	function handleDragEnd(event: DragEndEvent) {
+		setActiveId(null);
 		const { active, over } = event;
 		if (over && active.id !== over.id) {
 			setData((prevItems: any) => {
@@ -109,6 +117,7 @@ function Form() {
 		<DndContext
 			sensors={sensors}
 			collisionDetection={closestCenter}
+			onDragStart={handleDragStart}
 			onDragEnd={handleDragEnd}
 		>
 			<form
@@ -118,7 +127,7 @@ function Form() {
 			>
 				<FormHeader formik={formik} />
 				<AddButton addPos={addPos} />
-				<Questions questions={data} setAddPos={setAddPos} />
+				<Questions questions={data} setAddPos={setAddPos} activeId={activeId} />
 			</form>
 		</DndContext>
 	);
